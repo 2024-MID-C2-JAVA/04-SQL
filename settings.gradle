@@ -1,0 +1,13 @@
+rootProject.name = 'ArquitecturaHexagonal'
+
+include ':model'
+include ':usescases'
+include ':mysql-repository'
+include ':web'
+include ':app-service'
+
+findProject(':model').projectDir=file('./domain/model')
+findProject(':usescases').projectDir=file('./domain/usescases')
+findProject(':mysql-repository').projectDir=file('./infrastructure/driven-adapters/mysql-repository')
+findProject(':web').projectDir=file('./infrastructure/entry-points/web')
+findProject(':app-service').projectDir=file('./applications/app-service')
