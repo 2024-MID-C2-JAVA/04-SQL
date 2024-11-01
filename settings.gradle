@@ -1,2 +1,19 @@
-rootProject.name = 'Cuentaflex'
+rootProject.name = 'cuentaflex'
 
+include ':shared:business:models'
+findProject(':shared:business:models').projectDir = file("./shared/business/models")
+
+include ':shared:business:uses-cases'
+findProject(':shared:business:uses-cases').projectDir = file("./shared/business/uses-cases")
+
+include 'cuentaflex:applications:account-service'
+findProject(':cuentaflex:applications:account-service').projectDir = file("./cuentaflex/applications/account-service")
+
+include 'cuentaflex:business:models'
+findProject(':cuentaflex:business:models').projectDir = file("./cuentaflex/business/models")
+
+include 'cuentaflex:business:uses-cases'
+findProject(':cuentaflex:business:uses-cases').projectDir = file("./cuentaflex/business/uses-cases")
+
+include 'cuentaflex:business:driven-ports'
+findProject(':cuentaflex:business:driven-ports').projectDir = file("./cuentaflex/business/driven-ports")
