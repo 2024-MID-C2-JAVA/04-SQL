@@ -5,12 +5,14 @@ import java.math.BigDecimal;
 public class CompraRequestDTO {
     private String cuentaOrigen;
     private BigDecimal monto;
+    private String customer;
 
     public CompraRequestDTO() {}
 
-    public CompraRequestDTO(String cuentaOrigen, BigDecimal monto) {
+    public CompraRequestDTO(String cuentaOrigen, BigDecimal monto, String customer) {
         this.cuentaOrigen = cuentaOrigen;
         this.monto = monto;
+        this.customer = customer;
     }
 
     public String getCuentaOrigen() {
@@ -27,5 +29,13 @@ public class CompraRequestDTO {
 
     public void setMonto(BigDecimal monto) {
         this.monto = monto;
+    }
+
+    public String getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(String customer) {
+        this.customer = customer;
     }
 }

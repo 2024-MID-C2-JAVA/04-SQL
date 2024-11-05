@@ -31,7 +31,7 @@ public class DepositoDesdeOtraCuenta {
         accountGateway.save(cuentaOrigen);
         accountGateway.save(cuentaDestino);
 
-        // Registrar la transacción y detalles
+
         accountGateway.registrarTransaccion(monto, costoDepositoOtraCuenta, "DepositoOtraCuenta", cuentaOrigenNumber, cuentaDestinoNumber);
 
         return cuentaDestino;

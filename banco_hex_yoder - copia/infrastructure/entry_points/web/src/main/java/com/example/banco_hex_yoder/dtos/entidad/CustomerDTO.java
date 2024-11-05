@@ -13,7 +13,7 @@ public class CustomerDTO {
     @JsonManagedReference
     private List<AccountDTO> accounts;
 
-    // Getters y Setters
+
 
     public Integer getId() {
         return id;

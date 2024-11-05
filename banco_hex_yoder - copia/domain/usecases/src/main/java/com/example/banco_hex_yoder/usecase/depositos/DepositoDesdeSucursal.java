@@ -27,12 +27,14 @@ public class DepositoDesdeSucursal {
 
         BigDecimal montoFinal = monto.subtract(costoDepositoSucursal);
         cuentaOrigen.setAmount(cuentaOrigen.getAmount().subtract(monto));
+        cuentaDestino.setCreatedAt(cuentaDestino.getCreatedAt());
+
         cuentaDestino.setAmount(cuentaDestino.getAmount().add(montoFinal));
 
         accountGateway.save(cuentaOrigen);
         accountGateway.save(cuentaDestino);
 
-        // Registrar la transacción
+
         accountGateway.registrarTransaccion(monto, costoDepositoSucursal, "DepositoSucursal", cuentaOrigenNumber, cuentaDestinoNumber);
 
         return cuentaDestino;

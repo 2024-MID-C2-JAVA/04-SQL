@@ -7,7 +7,7 @@ import com.example.banco_hex_yoder.postgresql_repository.data.entidades.Transacc
 
 public class EntityMapper {
 
-    // Métodos para convertir entre Account y CuentaEntity
+
     public static Account toModel(CuentaEntity entity) {
         Account account = new Account();
         account.setId(entity.getId());
@@ -28,7 +28,7 @@ public class EntityMapper {
         return entity;
     }
 
-    // Métodos para convertir entre Transaction y TransaccionEntity
+
     public static Transaction toModel(TransaccionEntity entity) {
         Transaction transaction = new Transaction();
         transaction.setId(entity.getId());

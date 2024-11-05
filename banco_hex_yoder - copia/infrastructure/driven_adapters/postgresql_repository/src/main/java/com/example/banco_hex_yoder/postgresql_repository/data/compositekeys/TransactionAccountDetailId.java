@@ -1,4 +1,4 @@
-package com.example.banco_hex_yoder.postgresql_repository.data.entidades;
+package com.example.banco_hex_yoder.postgresql_repository.data.compositekeys;
 
 import jakarta.persistence.Embeddable;
 import java.io.Serializable;
@@ -10,16 +10,16 @@ public class TransactionAccountDetailId implements Serializable {
     private Integer transactionId;
     private Integer accountId;
 
-    // Constructor vacío
+
     public TransactionAccountDetailId() {}
 
-    // Constructor con argumentos
+
     public TransactionAccountDetailId(Integer transactionId, Integer accountId) {
         this.transactionId = transactionId;
         this.accountId = accountId;
     }
 
-    // Getters y Setters
+
     public Integer getTransactionId() {
         return transactionId;
     }

@@ -23,7 +23,7 @@ public class ClienteEntity {
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CuentaEntity> accounts;
 
-    // Getters y Setters
+
     public Integer getId() {
         return id;
     }

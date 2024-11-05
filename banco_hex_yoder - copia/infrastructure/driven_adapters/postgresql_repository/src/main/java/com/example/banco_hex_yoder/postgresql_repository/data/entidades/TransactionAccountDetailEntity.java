@@ -1,5 +1,6 @@
 package com.example.banco_hex_yoder.postgresql_repository.data.entidades;
 
+import com.example.banco_hex_yoder.postgresql_repository.data.compositekeys.TransactionAccountDetailId;
 import jakarta.persistence.*;
 import java.io.Serializable;
 
@@ -23,10 +24,10 @@ public class TransactionAccountDetailEntity implements Serializable {
     @Column(name = "transaction_role")
     private String transactionRole;
 
-    // Constructor vacío
+  
     public TransactionAccountDetailEntity() {}
 
-    // Constructor para inicializar el ID y las relaciones
+
     public TransactionAccountDetailEntity(TransaccionEntity transaction, CuentaEntity account, String transactionRole) {
         this.id = new TransactionAccountDetailId(transaction.getId(), account.getId());
         this.transaction = transaction;
@@ -34,7 +35,7 @@ public class TransactionAccountDetailEntity implements Serializable {
         this.transactionRole = transactionRole;
     }
 
-    // Getters y Setters
+
     public TransactionAccountDetailId getId() {
         return id;
     }

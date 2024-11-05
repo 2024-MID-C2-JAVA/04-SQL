@@ -27,7 +27,7 @@ public class CompraEstablecimientoFisico {
         cuentaOrigen.setAmount(cuentaOrigen.getAmount().subtract(montoTotal));
         accountGateway.save(cuentaOrigen);
 
-        // Registrar la transacción y detalles
+
         accountGateway.registrarTransaccion(montoTotal, costoCompraEstablecimiento, "CompraEstablecimientoFisico", cuentaOrigenNumber, cuentaOrigenNumber);
 
         return cuentaOrigen;

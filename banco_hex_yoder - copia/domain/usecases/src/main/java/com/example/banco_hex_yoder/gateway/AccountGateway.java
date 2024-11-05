@@ -11,12 +11,10 @@ public interface AccountGateway {
 
     void registrarTransaccion(BigDecimal monto, BigDecimal costo, String tipoTransaccion, Integer cuentaOrigenNumber, Integer cuentaDestinoNumber);
 
-
-
     Account save(Account account);
 
     Optional<Account> findByNumber(Integer number);
 
-
     void updateBalance(Integer accountId, BigDecimal newBalance);
+    boolean esCuentaDeUsuario(Integer accountNumber, String username);
 }

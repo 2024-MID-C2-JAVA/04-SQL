@@ -24,10 +24,10 @@ public class CompraPaginaWeb {
             throw new IllegalArgumentException("Saldo insuficiente para realizar la compra");
         }
 
-        // Debitar el monto total de la cuenta origen (incluido el costo de seguro)
+
         cuentaOrigen.setAmount(cuentaOrigen.getAmount().subtract(montoTotal));
 
-        // Guardar la cuenta actualizada
+
         return accountGateway.save(cuentaOrigen);
     }
 }

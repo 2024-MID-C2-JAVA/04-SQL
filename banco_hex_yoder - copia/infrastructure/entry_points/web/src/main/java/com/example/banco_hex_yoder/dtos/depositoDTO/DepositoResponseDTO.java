@@ -12,7 +12,7 @@ public class DepositoResponseDTO {
         this.saldoActual = saldoActual;
     }
 
-    // Getters y Setters
+
     public String getCuentaDestino() {
         return cuentaDestino;
     }

@@ -6,7 +6,7 @@ public class TransactionAccountDetail {
     private Integer accountId;
     private String transactionRole;
 
-    // Getters y Setters
+
     public Integer getTransactionId() {
         return transactionId;
     }

@@ -10,8 +10,10 @@ public class Account {
     private BigDecimal amount;
     private LocalDate createdAt;
     private boolean isDeleted;
+    private Integer customerId;
 
-    // Getters y Setters
+
+
     public Integer getId() {
         return id;
     }
@@ -49,6 +51,20 @@ public class Account {
     }
 
     public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+    public Integer getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
+    }
+    public Boolean getDeleted() { // Getter para isDeleted
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) { // Setter para isDeleted
         isDeleted = deleted;
     }
 }

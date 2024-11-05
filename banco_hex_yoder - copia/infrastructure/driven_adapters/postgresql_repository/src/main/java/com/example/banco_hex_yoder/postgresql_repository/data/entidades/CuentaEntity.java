@@ -29,7 +29,7 @@ public class CuentaEntity {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TransactionAccountDetailEntity> transactionDetails;
 
-    // Getters y Setters
+
     public Integer getId() {
         return id;
     }

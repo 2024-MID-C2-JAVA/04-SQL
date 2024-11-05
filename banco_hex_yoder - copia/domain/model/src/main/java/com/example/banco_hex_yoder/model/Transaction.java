@@ -11,7 +11,7 @@ public class Transaction {
     private String typeTransaction;
     private LocalDateTime timeStamp;
 
-    // Getters y Setters
+
     public Integer getId() {
         return id;
     }

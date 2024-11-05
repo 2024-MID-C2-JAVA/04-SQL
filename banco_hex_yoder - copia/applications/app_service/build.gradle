@@ -23,14 +23,28 @@ dependencies {
     implementation project(':infrastructure:driven_adapters:encriptacion')
     implementation project(':infrastructure:entry_points:web')
 
+    implementation project(':infrastructure:driven_adapters:mongo_repository')
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+
 }
 
-springBoot {
-    mainClass = 'com.example.banco_hex_yoder.MainApplication'
-}
 
 tasks.named('bootJar') {
     archiveBaseName.set('app-service')
+}
+
+
+
+
+
+
+
+
+
+
+
+springBoot {
+    mainClass = 'com.example.banco_hex_yoder.MainApplication'
 }

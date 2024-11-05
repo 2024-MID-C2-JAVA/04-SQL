@@ -1,25 +1,26 @@
+package com.example.banco_hex_yoder.mongo_repository.data.entidades;
 
-package com.example.banco_hex_yoder.dtos.entidad;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 
-public class TransactionDTO {
+@Document(collection = "transaction")
+public class TransactionDocument {
 
-    private Integer id;
+    @Id
+    private String id;
     private BigDecimal amountTransaction;
     private BigDecimal transactionCost;
     private String typeTransaction;
     private LocalDateTime timeStamp;
 
-    private List<AccountDTO> accounts;
-
-
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -53,13 +54,5 @@ public class TransactionDTO {
 
     public void setTimeStamp(LocalDateTime timeStamp) {
         this.timeStamp = timeStamp;
-    }
-
-    public List<AccountDTO> getAccounts() {
-        return accounts;
-    }
-
-    public void setAccounts(List<AccountDTO> accounts) {
-        this.accounts = accounts;
     }
 }

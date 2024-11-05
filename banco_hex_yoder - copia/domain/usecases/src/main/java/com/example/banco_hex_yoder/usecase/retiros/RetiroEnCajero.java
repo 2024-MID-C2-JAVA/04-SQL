@@ -24,14 +24,16 @@ public class RetiroEnCajero {
             throw new IllegalArgumentException("Saldo insuficiente para realizar el retiro");
         }
 
-        // Debitar el monto total de la cuenta origen (incluido el costo de retiro)
         cuentaOrigen.setAmount(cuentaOrigen.getAmount().subtract(montoTotal));
 
-        // Guardar la cuenta actualizada
+
         accountGateway.save(cuentaOrigen);
 
-        // Registrar la transacción
+
         accountGateway.registrarTransaccion(monto, costoRetiro, "RetiroCajero", cuentaOrigenNumber, cuentaDestinoNumber);
+
+        accountGateway.registrarTransaccion(monto, costoRetiro, "DepositoSucursal", cuentaOrigenNumber, cuentaDestinoNumber);
+
 
         return cuentaOrigen;
     }

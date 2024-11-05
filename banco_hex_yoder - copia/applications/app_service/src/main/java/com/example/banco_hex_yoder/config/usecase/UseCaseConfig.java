@@ -1,4 +1,4 @@
-package com.example.banco_hex_yoder.config.usecases;
+package com.example.banco_hex_yoder.config.usecase;
 
 import com.example.banco_hex_yoder.gateway.AccountGateway;
 import com.example.banco_hex_yoder.usecase.compras.CompraEstablecimientoFisico;
@@ -8,6 +8,7 @@ import com.example.banco_hex_yoder.usecase.depositos.DepositoDesdeOtraCuenta;
 import com.example.banco_hex_yoder.usecase.compras.CompraPaginaWeb;
 import com.example.banco_hex_yoder.usecase.retiros.RetiroEnCajero;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -34,33 +35,39 @@ public class UseCaseConfig {
     @Value("${app.costoCompraEstablecimiento}")
     private BigDecimal costoCompraEstablecimiento;
 
+    private final AccountGateway accountGateway;
+
+    public UseCaseConfig(AccountGateway accountGateway) {
+        this.accountGateway = accountGateway;
+    }
+
     @Bean
-    public DepositoDesdeSucursal depositoDesdeSucursal(AccountGateway accountGateway) {
+    public DepositoDesdeSucursal depositoDesdeSucursal() {
         return new DepositoDesdeSucursal(accountGateway, costoDepositoSucursal);
     }
 
     @Bean
-    public DepositoDesdeCajero depositoDesdeCajero(AccountGateway accountGateway) {
+    public DepositoDesdeCajero depositoDesdeCajero() {
         return new DepositoDesdeCajero(accountGateway, costoDepositoCajero);
     }
 
     @Bean
-    public DepositoDesdeOtraCuenta depositoDesdeOtraCuenta(AccountGateway accountGateway) {
+    public DepositoDesdeOtraCuenta depositoDesdeOtraCuenta() {
         return new DepositoDesdeOtraCuenta(accountGateway, costoDepositoOtraCuenta);
     }
 
     @Bean
-    public CompraPaginaWeb compraPaginaWeb(AccountGateway accountGateway) {
+    public CompraPaginaWeb compraPaginaWeb() {
         return new CompraPaginaWeb(accountGateway, costoSeguroCompraWeb);
     }
 
     @Bean
-    public RetiroEnCajero retiroEnCajero(AccountGateway accountGateway) {
+    public RetiroEnCajero retiroEnCajero() {
         return new RetiroEnCajero(accountGateway, costoRetiro);
     }
 
     @Bean
-    public CompraEstablecimientoFisico compraEstablecimientoFisico(AccountGateway accountGateway) {
+    public CompraEstablecimientoFisico compraEstablecimientoFisico() {
         return new CompraEstablecimientoFisico(accountGateway, costoCompraEstablecimiento);
     }
 }

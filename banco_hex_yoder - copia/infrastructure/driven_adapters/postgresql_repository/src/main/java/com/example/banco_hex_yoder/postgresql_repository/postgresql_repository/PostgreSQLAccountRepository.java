@@ -1,16 +1,16 @@
 package com.example.banco_hex_yoder.postgresql_repository.postgresql_repository;
 
 import com.example.banco_hex_yoder.model.Account;
-import com.example.banco_hex_yoder.model.Transaction;
 import com.example.banco_hex_yoder.postgresql_repository.data.entidades.CuentaEntity;
 import com.example.banco_hex_yoder.postgresql_repository.data.entidades.TransaccionEntity;
 import com.example.banco_hex_yoder.postgresql_repository.data.entidades.TransactionAccountDetailEntity;
-import com.example.banco_hex_yoder.postgresql_repository.data.entidades.TransactionAccountDetailId;
+import com.example.banco_hex_yoder.postgresql_repository.data.compositekeys.TransactionAccountDetailId;
 import com.example.banco_hex_yoder.postgresql_repository.data.repositorios.AccountRepository;
 import com.example.banco_hex_yoder.postgresql_repository.data.repositorios.TransactionAccountDetailRepository;
 import com.example.banco_hex_yoder.postgresql_repository.data.repositorios.TransactionRepository;
 import com.example.banco_hex_yoder.postgresql_repository.data.mappers.EntityMapper;
 import com.example.banco_hex_yoder.gateway.AccountGateway;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Component
+@ConditionalOnProperty(name = "app.useDB", havingValue = "0")
 public class PostgreSQLAccountRepository implements AccountGateway {
 
     private final AccountRepository accountRepository;
@@ -58,7 +59,7 @@ public class PostgreSQLAccountRepository implements AccountGateway {
 
     @Override
     public void registrarTransaccion(BigDecimal monto, BigDecimal costo, String tipoTransaccion, Integer cuentaOrigenNumber, Integer cuentaDestinoNumber) {
-        // Crear y guardar la entidad TransaccionEntity
+
         TransaccionEntity transaccion = new TransaccionEntity();
         transaccion.setAmountTransaction(monto);
         transaccion.setTransactionCost(costo);
@@ -78,7 +79,7 @@ public class PostgreSQLAccountRepository implements AccountGateway {
         TransactionAccountDetailEntity detalleOrigen = new TransactionAccountDetailEntity();
         detalleOrigen.setId(new TransactionAccountDetailId(transaccion.getId(), cuentaOrigen.getId()));
         detalleOrigen.setTransaction(transaccion);
-        detalleOrigen.setAccount(cuentaOrigen);  // Asigna la cuenta origen correctamente
+        detalleOrigen.setAccount(cuentaOrigen);
         detalleOrigen.setTransactionRole("ordenante");
 
 
@@ -88,11 +89,18 @@ public class PostgreSQLAccountRepository implements AccountGateway {
         TransactionAccountDetailEntity detalleDestino = new TransactionAccountDetailEntity();
         detalleDestino.setId(new TransactionAccountDetailId(transaccion.getId(), cuentaDestino.getId()));
         detalleDestino.setTransaction(transaccion);
-        detalleDestino.setAccount(cuentaDestino);  // Asigna la cuenta destino correctamente
+        detalleDestino.setAccount(cuentaDestino);
         detalleDestino.setTransactionRole("beneficiario");
 
 
         transactionAccountDetailRepository.save(detalleDestino);
+    }
+
+    @Override
+    public boolean esCuentaDeUsuario(Integer accountNumber, String username) {
+        return accountRepository.findByNumber(accountNumber)
+                .map(account -> account.getCustomer().getUsername().equals(username))
+                .orElse(false);
     }
 
 }

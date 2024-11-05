@@ -31,7 +31,7 @@ public class DepositoDesdeCajero {
         accountGateway.save(cuentaOrigen);
         accountGateway.save(cuentaDestino);
 
-        // Registrar la transacción y detalles
+
         accountGateway.registrarTransaccion(monto, costoDepositoCajero, "DepositoCajero", cuentaOrigenNumber, cuentaDestinoNumber);
 
         return cuentaDestino;

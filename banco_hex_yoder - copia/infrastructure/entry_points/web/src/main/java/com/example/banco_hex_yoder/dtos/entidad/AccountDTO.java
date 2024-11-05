@@ -14,7 +14,7 @@ public class AccountDTO {
     @JsonBackReference
     private CustomerDTO customer;
 
-    // Getters y Setters
+
 
     public Integer getId() {
         return id;

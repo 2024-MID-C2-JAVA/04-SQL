@@ -24,7 +24,7 @@ public class TransaccionEntity {
     @Column(name = "time_stamp", nullable = false)
     private LocalDateTime timeStamp;
 
-    // Getters y setters
+
     public Integer getId() {
         return id;
     }

@@ -11,7 +11,7 @@ public class Customer {
     private boolean isDeleted;
     private List<Account> accounts;
 
-    // Getters y Setters
+
     public Integer getId() {
         return id;
     }
