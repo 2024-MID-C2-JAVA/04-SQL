@@ -19,7 +19,6 @@ public class AccountRestController {
     @PostMapping("/create")
     public ResponseEntity<String>createAccount(@RequestBody CreateAccountDTO dto) {
         try{
-            System.out.println("ID CLIENTE : "+dto.getCustomerId());
             accountHandler.createAccount(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body("Account created");
         }catch (Exception e){
@@ -27,23 +26,19 @@ public class AccountRestController {
         }
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public ResponseEntity<String>deleteAccount(@RequestBody DeleteAccountDTO dto) {
         try{
             accountHandler.deleteAccount(dto);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Account deleted");
+            return ResponseEntity.status(HttpStatus.OK).body("Account deleted");
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while deleting the account: "+e.getMessage());
         }
     }
 
     @PostMapping("/get")
-    public ResponseEntity<AccountResponseDTO> getAccountById(@RequestBody GetAccountByIdDTO dto) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(accountHandler.getAccountById(dto));
-        }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+    public ResponseEntity<AccountResponseDTO> getAccountById(@RequestBody AccountUpdateDTO accountDTO) {
+        return ResponseEntity.status(HttpStatus.OK).body(accountHandler.getAccountById(accountDTO));
     }
 
     @PostMapping("/update")

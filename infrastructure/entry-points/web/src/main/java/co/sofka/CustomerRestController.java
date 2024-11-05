@@ -30,7 +30,7 @@ public class CustomerRestController {
         }
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public ResponseEntity<String> deleteCustomer(@RequestBody DeleteCustomerDTO deleteCustomerDTO) {
         try{
             customerHandler.deleteCustomer(deleteCustomerDTO);

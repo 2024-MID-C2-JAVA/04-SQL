@@ -4,6 +4,9 @@ public class DeleteCustomerDTO {
 
     private String id;
 
+    public DeleteCustomerDTO() {
+    }
+
     public DeleteCustomerDTO(String id) {
         this.id = id;
     }
@@ -14,5 +17,12 @@ public class DeleteCustomerDTO {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "DeleteCustomerDTO{" +
+                "id='" + id + '\'' +
+                '}';
     }
 }

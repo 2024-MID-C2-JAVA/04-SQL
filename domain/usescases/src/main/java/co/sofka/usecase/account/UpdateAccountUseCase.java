@@ -11,6 +11,7 @@ public class UpdateAccountUseCase {
         this.repository = repository;
     }
 
+
     public void apply(Account account) {
         repository.update(account);
     }

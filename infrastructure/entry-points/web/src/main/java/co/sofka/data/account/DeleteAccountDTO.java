@@ -4,6 +4,10 @@ public class DeleteAccountDTO {
 
     private String id;
 
+    public DeleteAccountDTO() {
+
+    }
+
     public DeleteAccountDTO(String id) {
         this.id = id;
     }
@@ -15,4 +19,5 @@ public class DeleteAccountDTO {
     public void setId(String id) {
         this.id = id;
     }
+
 }

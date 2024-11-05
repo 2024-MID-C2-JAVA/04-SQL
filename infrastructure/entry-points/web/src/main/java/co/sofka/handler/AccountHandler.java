@@ -15,16 +15,16 @@ import java.time.LocalDate;
 public class AccountHandler {
 
     private final CreateAccountUseCase createAccountUseCase;
-    private final DeleteAccountUseCase deleteAccountUseCase;
     private final GetAccountByIdUseCase getAccountByIdUseCase;
     private final UpdateAccountUseCase updateAccountUseCase;
+    private final DeleteAccountUseCase deleteAccountUseCase;
 
 
-    public AccountHandler(CreateAccountUseCase createAccountUseCase, DeleteAccountUseCase deleteAccountUseCase, GetAccountByIdUseCase getAccountByIdUseCase, UpdateAccountUseCase updateAccountUseCase) {
+    public AccountHandler(CreateAccountUseCase createAccountUseCase, GetAccountByIdUseCase getAccountByIdUseCase, UpdateAccountUseCase updateAccountUseCase, DeleteAccountUseCase deleteAccountUseCase) {
         this.createAccountUseCase = createAccountUseCase;
-        this.deleteAccountUseCase = deleteAccountUseCase;
         this.getAccountByIdUseCase = getAccountByIdUseCase;
         this.updateAccountUseCase = updateAccountUseCase;
+        this.deleteAccountUseCase = deleteAccountUseCase;
     }
 
     public void createAccount(CreateAccountDTO accountDTO) {
@@ -37,12 +37,12 @@ public class AccountHandler {
     }
 
     public void deleteAccount(DeleteAccountDTO accountDTO) {
-        Account account = new Account();
+        Account account =new Account();
         account.setId(accountDTO.getId());
         deleteAccountUseCase.apply(account);
     }
 
-    public AccountResponseDTO getAccountById(GetAccountByIdDTO accountDTO) {
+    public AccountResponseDTO getAccountById(AccountUpdateDTO accountDTO) {
         try {
             Account account = getAccountByIdUseCase.apply(new Account(accountDTO.getId()));
             AESUtilAdapter adapter = new AESUtilAdapter();

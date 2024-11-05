@@ -1,32 +1,26 @@
-package co.sofka;
+package co.sofka.data;
+
+import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+@Document(collection = "accounts")
+public class AccountDocument {
 
-public class Account {
-
+    @MongoId
     private String id;
     private int number;
     private BigDecimal amount;
+    @Field(name = "customer_id")
     private String customerId;
+    @Field(name = "created_at")
     private LocalDate createdAt;
+    @Field(name = "is_deleted")
     private Boolean isDeleted;
-
-    public Account(String id, int number, BigDecimal amount, String clientId, LocalDate createdAt) {
-        this.id = id;
-        this.number = number;
-        this.amount = amount;
-        this.customerId = clientId;
-        this.createdAt = createdAt;
-    }
-
-    public Account() {
-    }
-
-    public Account(String id) {
-        this.id = id;
-    }
 
     public String getId() {
         return id;
@@ -74,17 +68,5 @@ public class Account {
 
     public void setDeleted(Boolean deleted) {
         isDeleted = deleted;
-    }
-
-    @Override
-    public String toString() {
-        return "Account{" +
-                "id='" + id + '\'' +
-                ", number=" + number +
-                ", amount=" + amount +
-                ", customerId='" + customerId + '\'' +
-                ", createdAt=" + createdAt +
-                ", isDeleted=" + isDeleted +
-                '}';
     }
 }

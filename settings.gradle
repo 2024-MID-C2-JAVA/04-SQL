@@ -2,12 +2,14 @@ rootProject.name = 'ArquitecturaHexagonal'
 
 include ':model'
 include ':usescases'
-include ':mysql-repository'
+include ':postgreSQL-repository'
 include ':web'
 include ':app-service'
+include ':mongo-repository'
 
 findProject(':model').projectDir=file('./domain/model')
 findProject(':usescases').projectDir=file('./domain/usescases')
-findProject(':mysql-repository').projectDir=file('./infrastructure/driven-adapters/mysql-repository')
+findProject(':postgreSQL-repository').projectDir=file('./infrastructure/driven-adapters/postgreSQL-repository')
 findProject(':web').projectDir=file('./infrastructure/entry-points/web')
 findProject(':app-service').projectDir=file('./applications/app-service')
+findProject(':mongo-repository').projectDir=file("./infrastructure/driven-adapters/mongo-repository")

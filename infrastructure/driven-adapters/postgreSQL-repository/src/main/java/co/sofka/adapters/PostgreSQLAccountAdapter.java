@@ -1,7 +1,8 @@
-package co.sofka;
+package co.sofka.adapters;
 
-import co.sofka.config.MysqlAccountRepository;
-import co.sofka.config.MysqlCustomerRepository;
+import co.sofka.Account;
+import co.sofka.config.PostgreSQLAccountRepository;
+import co.sofka.config.PostgreSQLCustomerRepository;
 import co.sofka.data.AccountEntity;
 import co.sofka.data.CustomerEntity;
 import co.sofka.exception.AccountNumberException;
@@ -16,12 +17,12 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Repository
-public class MysqlAccountAdapter implements CreateRepository<Account>, DeleteRepository<Account>, GetByIdRepository<Account>, UpdateRepository<Account> {
+public class PostgreSQLAccountAdapter implements CreateRepository<Account>, DeleteRepository<Account>, GetByIdRepository<Account>, UpdateRepository<Account> {
 
-    private final MysqlAccountRepository repository;
-    private final MysqlCustomerRepository customerRepository;
+    private final PostgreSQLAccountRepository repository;
+    private final PostgreSQLCustomerRepository customerRepository;
 
-    public MysqlAccountAdapter(MysqlAccountRepository repository, MysqlCustomerRepository customerRepository) {
+    public PostgreSQLAccountAdapter(PostgreSQLAccountRepository repository, PostgreSQLCustomerRepository customerRepository) {
         this.repository = repository;
         this.customerRepository = customerRepository;
     }
@@ -40,6 +41,7 @@ public class MysqlAccountAdapter implements CreateRepository<Account>, DeleteRep
             throw new InvalidAmountException("The amount can´t be negative");
         }
         entity.setCustomer(customer);
+        entity.setDeleted(false);
         entity.setCreatedAt(LocalDate.now());
         repository.save(entity);
     }
@@ -47,9 +49,9 @@ public class MysqlAccountAdapter implements CreateRepository<Account>, DeleteRep
 
     @Override
     public void delete(Account account) {
-        AccountEntity entity = new AccountEntity();
-        entity.setId(Integer.parseInt(account.getId()));
-        repository.delete(entity);
+        AccountEntity entity = repository.findById(Integer.parseInt(account.getId())).get();
+        entity.setDeleted(true);
+        repository.save(entity);
     }
 
 

@@ -26,6 +26,9 @@ public class AccountEntity {
 
     private LocalDate createdAt;
 
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
+
     @OneToMany(mappedBy = "account")
     private Set<AccountTransactionEntity> transactions = new HashSet<>();
 
@@ -79,4 +82,12 @@ public class AccountEntity {
         return this.customer.getId();
     }
 
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
 }

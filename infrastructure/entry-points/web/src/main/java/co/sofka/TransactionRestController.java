@@ -33,11 +33,7 @@ public class TransactionRestController {
 
     @PostMapping("/get")
     public ResponseEntity<TransactionResponseDTO> getTransaction(@RequestBody GetTransactionDTO dto) {
-        try{
-            return ResponseEntity.ok(transactionHandler.getTransactionById(dto));
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+        return ResponseEntity.ok(transactionHandler.getTransactionById(dto));
     }
 
 }

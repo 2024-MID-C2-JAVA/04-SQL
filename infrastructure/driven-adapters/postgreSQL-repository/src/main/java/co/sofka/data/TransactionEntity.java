@@ -12,6 +12,7 @@ import java.util.Set;
 @Entity
 @Table(name = "transactions")
 public class TransactionEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

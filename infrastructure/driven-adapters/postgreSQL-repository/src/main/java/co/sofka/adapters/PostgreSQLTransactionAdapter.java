@@ -1,8 +1,9 @@
-package co.sofka;
+package co.sofka.adapters;
 
-import co.sofka.config.MysqlAccountRepository;
-import co.sofka.config.MysqlAccountTransactionRepository;
-import co.sofka.config.MysqlTransactionRepository;
+import co.sofka.Transaction;
+import co.sofka.config.PostgreSQLAccountRepository;
+import co.sofka.config.PostgreSQLAccountTransactionRepository;
+import co.sofka.config.PostgreSQLTransactionRepository;
 import co.sofka.data.AccountEntity;
 import co.sofka.data.AccountTransactionEntity;
 import co.sofka.data.TransactionEntity;
@@ -18,13 +19,13 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 @Repository
-public class MysqlTransactionAdapter implements CreateRepository<Transaction>, DeleteRepository<Transaction>, GetByIdRepository<Transaction> {
+public class PostgreSQLTransactionAdapter implements CreateRepository<Transaction>, DeleteRepository<Transaction>, GetByIdRepository<Transaction> {
 
-    private final MysqlTransactionRepository repository;
-    private final MysqlAccountRepository accountRepository;
-    private final MysqlAccountTransactionRepository accountTransactionRepository;
+    private final PostgreSQLTransactionRepository repository;
+    private final PostgreSQLAccountRepository accountRepository;
+    private final PostgreSQLAccountTransactionRepository accountTransactionRepository;
 
-    public MysqlTransactionAdapter(MysqlTransactionRepository transactionRepository, MysqlAccountRepository accountRepository, MysqlAccountTransactionRepository accountTransactionRepository) {
+    public PostgreSQLTransactionAdapter(PostgreSQLTransactionRepository transactionRepository, PostgreSQLAccountRepository accountRepository, PostgreSQLAccountTransactionRepository accountTransactionRepository) {
         this.repository = transactionRepository;
         this.accountRepository = accountRepository;
         this.accountTransactionRepository = accountTransactionRepository;

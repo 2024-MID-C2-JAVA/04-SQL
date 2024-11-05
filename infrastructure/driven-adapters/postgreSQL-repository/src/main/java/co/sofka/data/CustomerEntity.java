@@ -15,6 +15,8 @@ public class CustomerEntity {
     private String name;
     @Temporal(TemporalType.DATE)
     private LocalDate createdAt;
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
 
     public int getId() {
         return id;
@@ -40,4 +42,22 @@ public class CustomerEntity {
         this.createdAt = createdAt;
     }
 
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    @Override
+    public String toString() {
+        return "CustomerEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", createdAt=" + createdAt +
+                ", isDeleted=" + isDeleted +
+                '}';
+    }
 }

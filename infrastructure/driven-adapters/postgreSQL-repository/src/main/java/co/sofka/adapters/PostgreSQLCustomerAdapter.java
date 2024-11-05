@@ -1,6 +1,7 @@
-package co.sofka;
+package co.sofka.adapters;
 
-import co.sofka.config.MysqlCustomerRepository;
+import co.sofka.Customer;
+import co.sofka.config.PostgreSQLCustomerRepository;
 import co.sofka.data.CustomerEntity;
 import co.sofka.exceptions.InvalidNameCustomerException;
 import co.sofka.gateway.CreateRepository;
@@ -11,11 +12,11 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 
 @Repository
-public class MysqlCustomerAdapter implements CreateRepository<Customer>, DeleteRepository<Customer>, GetByIdRepository<Customer> {
+public class PostgreSQLCustomerAdapter implements CreateRepository<Customer>, DeleteRepository<Customer>, GetByIdRepository<Customer> {
 
-    private final MysqlCustomerRepository repository;
+    private final PostgreSQLCustomerRepository repository;
 
-    public MysqlCustomerAdapter(MysqlCustomerRepository repository) {
+    public PostgreSQLCustomerAdapter(PostgreSQLCustomerRepository repository) {
         this.repository = repository;
     }
 
@@ -29,6 +30,7 @@ public class MysqlCustomerAdapter implements CreateRepository<Customer>, DeleteR
 
         entity.setName(customer.getName());
         entity.setCreatedAt(LocalDate.now());
+        entity.setDeleted(false);
         repository.save(entity);
     }
 
@@ -36,9 +38,9 @@ public class MysqlCustomerAdapter implements CreateRepository<Customer>, DeleteR
 
     @Override
     public void delete(Customer customer) {
-        CustomerEntity entity=new CustomerEntity();
-        entity.setId(Integer.parseInt(customer.getId()));
-        repository.delete(entity);
+        CustomerEntity entity=repository.findById(Integer.parseInt(customer.getId())).get();
+        entity.setDeleted(true);
+        repository.save(entity);
     }
 
 
