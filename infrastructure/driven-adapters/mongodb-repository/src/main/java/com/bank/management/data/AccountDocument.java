@@ -6,7 +6,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Document(collection = "account")
 public class AccountDocument {
@@ -21,6 +23,9 @@ public class AccountDocument {
     @Field("customer_id")
     private String customerId;
 
+    @Field("transactions")
+    private List<TransactionDocument> transactions = new ArrayList<>();
+
     @Field("created_at")
     private Date createdAt;
 
@@ -29,11 +34,12 @@ public class AccountDocument {
 
     public AccountDocument() {}
 
-    public AccountDocument(String number, BigDecimal amount, String customerId) {
+    public AccountDocument(String number, BigDecimal amount, String customerId, List<TransactionDocument> transactions) {
         this.number = number;
         this.amount = amount;
         this.customerId = customerId;
         this.createdAt = new Date();
+        this.transactions = (transactions != null) ? transactions : new ArrayList<>();
     }
 
     public void adjustBalance(BigDecimal amount) {
@@ -41,6 +47,15 @@ public class AccountDocument {
     }
 
     // Getters y Setters
+
+
+    public List<TransactionDocument> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<TransactionDocument> transactions) {
+        this.transactions = transactions;
+    }
 
     public String getId() {
         return id;

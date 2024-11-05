@@ -1,13 +1,16 @@
 package com.bank.management.usecase;
 
 import com.bank.management.Account;
+import com.bank.management.Customer;
 import com.bank.management.Purchase;
 import com.bank.management.Transaction;
 import com.bank.management.enums.PurchaseType;
 import com.bank.management.exception.BankAccountNotFoundException;
+import com.bank.management.exception.CustomerNotFoundException;
 import com.bank.management.exception.InsufficientFundsException;
 import com.bank.management.exception.InvalidPurchaseTypeException;
 import com.bank.management.gateway.AccountRepository;
+import com.bank.management.gateway.CustomerRepository;
 import com.bank.management.gateway.TransactionRepository;
 
 import java.math.BigDecimal;
@@ -17,10 +20,12 @@ public class ProcessPurchaseWithCardUseCase {
 
     private final AccountRepository bankAccountRepository;
     private final TransactionRepository transactionRepository;
+    private final CustomerRepository customerRepository;
 
-    public ProcessPurchaseWithCardUseCase(AccountRepository bankAccountRepository, TransactionRepository transactionRepository) {
+    public ProcessPurchaseWithCardUseCase(AccountRepository bankAccountRepository, TransactionRepository transactionRepository, CustomerRepository customerRepository) {
         this.bankAccountRepository = bankAccountRepository;
         this.transactionRepository = transactionRepository;
+        this.customerRepository = customerRepository;
     }
 
 
@@ -29,6 +34,12 @@ public class ProcessPurchaseWithCardUseCase {
 
         if (accountOptional.isEmpty()) {
             throw new BankAccountNotFoundException();
+        }
+
+        Optional<Customer> customerOptional = customerRepository.findByNumber(purchase.getAccountNumber());
+
+        if (customerOptional.isEmpty()) {
+            throw new CustomerNotFoundException(purchase.getAccountNumber());
         }
 
         PurchaseType purchaseType;
@@ -55,7 +66,7 @@ public class ProcessPurchaseWithCardUseCase {
                 .transactionCost(fee)
                 .typeTransaction(purchaseType.toString())
                 .build();
-        transactionRepository.save(trx, account, "BUYER");
+        transactionRepository.save(trx, account, customerOptional.get(),"BUYER");
 
         return bankAccountRepository.save(account);
     }

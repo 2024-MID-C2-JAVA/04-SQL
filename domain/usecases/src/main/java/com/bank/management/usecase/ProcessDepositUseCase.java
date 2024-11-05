@@ -57,7 +57,7 @@ public class ProcessDepositUseCase {
                 .typeTransaction(depositType.toString())
                 .build();
 
-        transactionRepository.save(trx, account, "RECEIVED");
+        transactionRepository.save(trx, account, customerOptional.get(), "RECEIVED");
         return bankAccountRepository.save(account);
     }
 

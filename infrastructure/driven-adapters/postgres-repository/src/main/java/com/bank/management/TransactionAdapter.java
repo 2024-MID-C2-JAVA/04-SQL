@@ -25,7 +25,7 @@ public class TransactionAdapter implements TransactionRepository {
     }
 
     @Override
-    public Optional<Transaction> save(Transaction trx, Account account, String role) {
+    public Optional<Transaction> save(Transaction trx, Account account, Customer customer, String role) {
         TransactionEntity trxEntity = TransactionMapper.toEntity(trx);
         TransactionEntity trxSaved = transactionRepository.save(trxEntity);
         TransactionAccountDetailEntity trxDetail = new TransactionAccountDetailEntity(trxSaved, BankAccountMapper.toEntity(account), role);

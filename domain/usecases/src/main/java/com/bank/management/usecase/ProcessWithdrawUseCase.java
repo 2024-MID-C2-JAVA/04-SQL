@@ -57,7 +57,7 @@ public class ProcessWithdrawUseCase {
                 .typeTransaction("WITHDRAWAL")
                 .build();
 
-        transactionRepository.save(trx, account, "RECEIVED");
+        transactionRepository.save(trx, account, customer ,"RECEIVED");
 
         return bankAccountRepository.save(account);
     }

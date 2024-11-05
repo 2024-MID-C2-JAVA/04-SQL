@@ -16,8 +16,8 @@ public class CustomerDocument {
     private String username;
 
 
-    @Field("account_ids")
-    private List<String> accountIds;
+    @Field("accounts")
+    private List<AccountDocument> accounts;
 
     @Field("created_at")
     private Date createdAt;
@@ -27,9 +27,9 @@ public class CustomerDocument {
 
     public CustomerDocument() {}
 
-    public CustomerDocument(String username, List<String> accountIds) {
+    public CustomerDocument(String username, List<AccountDocument> accounts) {
         this.username = username;
-        this.accountIds = accountIds;
+        this.accounts = accounts;
         this.createdAt = new Date();
     }
 
@@ -51,12 +51,12 @@ public class CustomerDocument {
         this.username = username;
     }
 
-    public List<String> getAccountIds() {
-        return accountIds;
+    public List<AccountDocument> getAccounts() {
+        return accounts;
     }
 
-    public void setAccountIds(List<String> accountIds) {
-        this.accountIds = accountIds;
+    public void setAccounts(List<AccountDocument> accountIds) {
+        this.accounts = accountIds;
     }
 
     public Date getCreatedAt() {

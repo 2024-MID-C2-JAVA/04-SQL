@@ -25,9 +25,9 @@ public class CreateBankAccountUseCase {
 
     public Account apply(Account account, Customer customer) {
 
-        Optional<Customer> customerOptional = customerRepository.findById(customer.getId().toString());
+        Optional<Customer> customerOptional = customerRepository.findById(customer.getId());
         if (customerOptional.isEmpty()) {
-            throw new CustomerNotFoundException(customer.getId().toString());
+            throw new CustomerNotFoundException(customer.getId());
         }
         Customer customerFound = customerOptional.get();
 

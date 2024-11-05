@@ -2,6 +2,7 @@ package com.bank.management.mapper;
 
 import com.bank.management.Account;
 import com.bank.management.Customer;
+import com.bank.management.data.AccountDocument;
 import com.bank.management.data.CustomerDocument;
 
 import java.util.List;
@@ -17,12 +18,13 @@ public class CustomerMapper {
         document.setCreatedAt(customer.getCreatedAt());
 
         if (customer.getAccounts() != null) {
-            List<String> accountIds = customer.getAccounts().stream()
-                    .map(Account::getId)
+            List<AccountDocument> accountDocuments = customer.getAccounts().stream()
+                    .map(AccountMapper::toDocument)
                     .collect(Collectors.toList());
-            document.setAccountIds(accountIds);
-        }
+            document.setAccounts(accountDocuments);
 
+            return document;
+        }
         return document;
     }
 
@@ -34,14 +36,12 @@ public class CustomerMapper {
                 .isDeleted(document.isDeleted())
                 .createdAt(document.getCreatedAt());
 
-        if (document.getAccountIds() != null) {
-            List<Account> accounts = document.getAccountIds().stream()
-                    .map(accountId -> new Account.Builder()
-                            .id(accountId)
-                            .build())
-                    .collect(Collectors.toList());
-            builder.accounts(accounts);
-        }
+            if (document.getAccounts() != null) {
+                List<Account> accounts = document.getAccounts().stream()
+                        .map(AccountMapper::toDomain)
+                        .collect(Collectors.toList());
+                builder.accounts(accounts);
+            }
 
         return builder.build();
     }

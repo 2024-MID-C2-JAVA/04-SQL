@@ -63,9 +63,18 @@ public class BankAccountAdapter implements AccountRepository {
     @Override
     public Optional<Account> save(Account account) {
         AccountDocument accountDocument = AccountMapper.toDocument(account);
-        AccountDocument savedDocument = mongoTemplate.save(accountDocument);
-        Account savedAccount = AccountMapper.toDomain(savedDocument);
+
+        if (account.getCustomer() != null) {
+            Customer customer = account.getCustomer();
+
+            Query query = new Query(Criteria.where("id").is(customer.getId()));
+
+            Update update = new Update().push("accounts", accountDocument );
+            mongoTemplate.updateFirst(query, update, CustomerDocument.class);
+        }
+
+        Account savedAccount = AccountMapper.toDomain(accountDocument );
 
         return Optional.of(savedAccount);
-    }
+        }
 }
