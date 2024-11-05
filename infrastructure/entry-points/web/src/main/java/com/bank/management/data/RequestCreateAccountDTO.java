@@ -7,16 +7,16 @@ import java.math.BigDecimal;
  */
 public class RequestCreateAccountDTO {
 
-    private Long customerId;
+    private String customerId;
     private BigDecimal amount;
 
     public RequestCreateAccountDTO() {}
 
-    public Long getCustomerId() {
+    public String getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(Long customerId) {
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
 

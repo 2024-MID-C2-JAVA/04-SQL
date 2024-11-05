@@ -1,6 +1,8 @@
 package com.bank.management;
 
 import com.bank.management.data.CustomerDTO;
+import com.bank.management.data.RequestDepositDTO;
+import com.bank.management.data.RequestGetCustomerDTO;
 import com.bank.management.usecase.GetCustomerByIdUseCase;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,9 +19,10 @@ public class GetCustomerByIdController {
     }
 
 
-    @GetMapping("/{id}")
-    public CustomerDTO getAllCustomers(@PathVariable Long id) {
-        Customer customer = getCustomerByidUseCase.apply(id);
+    @PostMapping("/get")
+    public CustomerDTO getAllCustomers(@RequestBody RequestGetCustomerDTO requestGetCustomerDTO) {
+
+        Customer customer = getCustomerByidUseCase.apply(requestGetCustomerDTO.getId());
 
         return new CustomerDTO.Builder()
                 .setUsername(customer.getUsername())

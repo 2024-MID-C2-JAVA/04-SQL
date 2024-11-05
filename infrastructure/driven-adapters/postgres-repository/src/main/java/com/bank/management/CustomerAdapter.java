@@ -27,11 +27,10 @@ public class CustomerAdapter implements CustomerRepository {
     }
 
     @Override
-    public Optional<Customer> findById(Long id) {
+    public Optional<Customer> findById(String id) {
 
-        return Optional.ofNullable(customerRepository.findById(id)
-                .map(CustomerMapper::toDomain)
-                .orElse(null));
+        return customerRepository.findById(Long.parseLong(id))
+                .map(CustomerMapper::toDomain);
     }
 
     @Override
@@ -51,7 +50,8 @@ public class CustomerAdapter implements CustomerRepository {
     @Override
     public boolean delete(Customer customer) {
         CustomerEntity entity = CustomerMapper.toEntity(customer);
-        customerRepository.delete(entity);
+        entity.setDeleted(true);
+        customerRepository.save(entity);
         return true;
     }
 

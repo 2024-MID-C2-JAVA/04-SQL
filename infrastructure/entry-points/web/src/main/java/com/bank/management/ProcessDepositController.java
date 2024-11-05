@@ -2,7 +2,6 @@ package com.bank.management;
 
 import com.bank.management.data.RequestDepositDTO;
 import com.bank.management.data.ResponseDepositDTO;
-import com.bank.management.gateway.EncryptionGateway;
 import com.bank.management.usecase.EncryptionUseCase;
 import com.bank.management.usecase.ProcessDepositUseCase;
 import org.springframework.http.ResponseEntity;

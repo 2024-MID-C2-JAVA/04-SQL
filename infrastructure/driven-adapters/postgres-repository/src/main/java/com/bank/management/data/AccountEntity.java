@@ -26,6 +26,8 @@ public class AccountEntity {
     @Column(name = "created_at")
     @CreationTimestamp
     private Date createdAt;
+    
+    private boolean isDeleted;
 
     public AccountEntity() {}
 
@@ -47,6 +49,14 @@ public class AccountEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 
     public Date getCreatedAt() {

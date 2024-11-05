@@ -3,7 +3,7 @@ package com.bank.management.data;
 import java.math.BigDecimal;
 
 public class RequestDepositDTO {
-    private Long customerId;
+    private String customerId;
     private String accountNumber;
     private BigDecimal amount;
     private String type;
@@ -15,7 +15,7 @@ public class RequestDepositDTO {
         this.type = builder.type;
     }
 
-    private RequestDepositDTO(Long customerId, String accountNumber, BigDecimal amount, String type) {
+    private RequestDepositDTO(String customerId, String accountNumber, BigDecimal amount, String type) {
         this.customerId = customerId;
         this.accountNumber = accountNumber;
         this.amount = amount;
@@ -23,7 +23,7 @@ public class RequestDepositDTO {
     }
 
     // Getters
-    public Long getCustomerId() {
+    public String getCustomerId() {
         return customerId;
     }
 
@@ -40,12 +40,12 @@ public class RequestDepositDTO {
     }
 
     public static class Builder {
-        private Long customerId;
+        private String customerId;
         private String accountNumber;
         private BigDecimal amount;
         private String type;
 
-        public Builder setCustomerId(Long customerId) {
+        public Builder setCustomerId(String customerId) {
             this.customerId = customerId;
             return this;
         }

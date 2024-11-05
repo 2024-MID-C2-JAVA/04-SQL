@@ -20,8 +20,8 @@ public class BankAccountAdapter implements AccountRepository {
     }
 
     @Override
-    public Optional<Account> findById(Long id) {
-        Optional<AccountEntity> bankAccountFound = bankAccountRepository.findById(id);
+    public Optional<Account> findById(String id) {
+        Optional<AccountEntity> bankAccountFound = bankAccountRepository.findById(Long.valueOf(id));
         return bankAccountFound.map(BankAccountMapper::toDomain);
     }
 
@@ -34,10 +34,12 @@ public class BankAccountAdapter implements AccountRepository {
     }
 
     @Override
-    public boolean delete(Long id) {
-        Optional<AccountEntity> bankAccountFound = bankAccountRepository.findById(id);
+    public boolean delete(String id) {
+        Optional<AccountEntity> bankAccountFound = bankAccountRepository.findById(Long.valueOf(id));
         if (bankAccountFound.isEmpty()) {return false;}
-        bankAccountRepository.delete(bankAccountFound.get());
+        AccountEntity entity = bankAccountFound.get();
+        entity.setDeleted(true);
+        bankAccountRepository.save(bankAccountFound.get());
         return true;
     }
 
@@ -51,8 +53,8 @@ public class BankAccountAdapter implements AccountRepository {
     }
 
     @Override
-    public List<Account> findByCustomerId(Long customerId) {
-        List<AccountEntity> bankAccountEntities = bankAccountRepository.findByCustomerId(customerId);
+    public List<Account> findByCustomerId(String customerId) {
+        List<AccountEntity> bankAccountEntities = bankAccountRepository.findByCustomerId(Long.valueOf(customerId));
         return bankAccountEntities.stream()
                 .map(BankAccountMapper::toDomain)
                 .collect(Collectors.toList());

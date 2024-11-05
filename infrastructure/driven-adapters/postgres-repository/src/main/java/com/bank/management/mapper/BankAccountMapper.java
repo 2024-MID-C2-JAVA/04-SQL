@@ -12,12 +12,12 @@ public class BankAccountMapper {
         }
 
         Account account = new Account();
-        account.setId(entity.getId());
+        account.setId(entity.getId().toString());
         account.setNumber(entity.getNumber());
         account.setAmount(entity.getAmount());
         account.setCreated_at(entity.getCreatedAt());
         if (entity.getCustomer() != null) {
-            Customer customer = new Customer.Builder().id(entity.getCustomer().getId()).build();
+            Customer customer = new Customer.Builder().id(entity.getCustomer().getId().toString()).build();
             account.setCustomer(customer);
         }
 
@@ -29,7 +29,7 @@ public class BankAccountMapper {
             return null;
         }
         AccountEntity entity = new AccountEntity();
-        entity.setId(account.getId());
+        entity.setId(account.getId() != null ? Long.valueOf(account.getId()) : null);
         entity.setNumber(account.getNumber());
         entity.setAmount(account.getAmount());
         entity.setCreatedAt(account.getCreated_at());

@@ -1,5 +1,6 @@
 package com.bank.management;
 
+import com.bank.management.data.RequestGetCustomerDTO;
 import com.bank.management.data.ResponseDeleteBankAccountDTO;
 import com.bank.management.usecase.CreateCustomerUseCase;
 import com.bank.management.usecase.DeleteCustomerUseCase;
@@ -20,20 +21,20 @@ public class DeleteCustomerController {
         this.deleteCustomerUseCase = deleteCustomerUseCase;
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseDeleteBankAccountDTO> deleteCustomer(@PathVariable Long id) {
-        boolean isDeleted = deleteCustomerUseCase.apply(id);
+    @PostMapping("/delete")
+    public ResponseEntity<ResponseDeleteBankAccountDTO> deleteCustomer(@RequestBody RequestGetCustomerDTO requestGetCustomerDTO) {
+        boolean isDeleted = deleteCustomerUseCase.apply(requestGetCustomerDTO.getId());
 
         if (isDeleted) {
             ResponseDeleteBankAccountDTO response = new ResponseDeleteBankAccountDTO.Builder()
                     .setMessage("Customer deleted successfully.")
-                    .setAccountNumber(String.valueOf(id))
+                    .setAccountNumber(String.valueOf(requestGetCustomerDTO.getId()))
                     .build();
             return ResponseEntity.ok(response);
         } else {
             ResponseDeleteBankAccountDTO response = new ResponseDeleteBankAccountDTO.Builder()
                     .setMessage("Error deleting customer")
-                    .setAccountNumber(String.valueOf(id))
+                    .setAccountNumber(String.valueOf(requestGetCustomerDTO.getId()))
                     .build();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }

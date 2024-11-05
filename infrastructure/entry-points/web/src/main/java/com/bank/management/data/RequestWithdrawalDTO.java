@@ -3,7 +3,7 @@ package com.bank.management.data;
 import java.math.BigDecimal;
 
 public class RequestWithdrawalDTO {
-    private final Long customerId;
+    private final String customerId;
     private final String accountNumber;
     private final BigDecimal amount;
 
@@ -13,13 +13,13 @@ public class RequestWithdrawalDTO {
         this.amount = builder.amount;
     }
 
-    public RequestWithdrawalDTO(Long customerId, String accountNumber, BigDecimal amount) {
+    public RequestWithdrawalDTO(String customerId, String accountNumber, BigDecimal amount) {
         this.customerId = customerId;
         this.accountNumber = accountNumber;
         this.amount = amount;
     }
 
-    public Long getCustomerId() {
+    public String getCustomerId() {
         return customerId;
     }
 
@@ -32,11 +32,11 @@ public class RequestWithdrawalDTO {
     }
 
     public static class Builder {
-        private Long customerId;
+        private String customerId;
         private String accountNumber;
         private BigDecimal amount;
 
-        public Builder setCustomerId(Long customerId) {
+        public Builder setCustomerId(String customerId) {
             this.customerId = customerId;
             return this;
         }
