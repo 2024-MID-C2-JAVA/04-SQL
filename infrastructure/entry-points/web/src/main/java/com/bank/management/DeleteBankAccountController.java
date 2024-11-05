@@ -1,5 +1,6 @@
 package com.bank.management;
 
+import com.bank.management.data.RequestGetBankAccountDTO;
 import com.bank.management.data.ResponseDeleteBankAccountDTO;
 import com.bank.management.usecase.DeleteBankAccountUseCase;
 import org.springframework.http.HttpStatus;
@@ -16,22 +17,22 @@ public class DeleteBankAccountController {
         this.deleteBankAccountUseCase = deleteBankAccountUseCase;
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseDeleteBankAccountDTO> deleteBankAccount(@PathVariable Long id) {
+    @PostMapping("/delete")
+    public ResponseEntity<ResponseDeleteBankAccountDTO> deleteBankAccount(@RequestBody RequestGetBankAccountDTO requestGetBankAccountDTO) {
 
-        boolean isDeleted = deleteBankAccountUseCase.apply(id);
+        boolean isDeleted = deleteBankAccountUseCase.apply(requestGetBankAccountDTO.getId());
 
         if (isDeleted) {
 
             ResponseDeleteBankAccountDTO response = new ResponseDeleteBankAccountDTO.Builder()
                     .setMessage("Bank account deleted successfully.")
-                    .setAccountNumber(String.valueOf(id)) 
+                    .setAccountNumber(requestGetBankAccountDTO.getId())
                     .build();
             return ResponseEntity.ok(response);
         } else {
             ResponseDeleteBankAccountDTO response = new ResponseDeleteBankAccountDTO.Builder()
                     .setMessage("Error deleting bank account")
-                    .setAccountNumber(String.valueOf(id))
+                    .setAccountNumber(requestGetBankAccountDTO.getId())
                     .build();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }

@@ -1,6 +1,7 @@
 package com.bank.management;
 
 import com.bank.management.data.BankAccountDTO;
+import com.bank.management.data.RequestGetBankAccountDTO;
 import com.bank.management.usecase.GetBankAccountUseCase;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,9 +16,9 @@ public class GetBankAccountController {
     }
 
 
-    @GetMapping("/{id}")
-    public BankAccountDTO getBankAccount(@PathVariable Long id) {
-        Account account = getBankAccountUseCase.apply(id);
+    @PostMapping("/get")
+    public BankAccountDTO getBankAccount(@RequestBody RequestGetBankAccountDTO requestGetBankAccountDTO) {
+        Account account = getBankAccountUseCase.apply(requestGetBankAccountDTO.getId());
 
         return new BankAccountDTO.Builder()
                 .number(account.getNumber())

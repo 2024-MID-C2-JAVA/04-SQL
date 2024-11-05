@@ -25,6 +25,8 @@ public class CustomerEntity {
     @CreationTimestamp
     private Date createdAt;
 
+    private boolean isDeleted;
+
     public CustomerEntity() {}
 
     public CustomerEntity(Long id, String username) {
@@ -44,6 +46,14 @@ public class CustomerEntity {
 
     public Date getCreatedAt() {
         return createdAt;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 
     public void setCreatedAt(Date createdAt) {

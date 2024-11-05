@@ -31,6 +31,7 @@ public class TransactionAccountDetailEntity {
         this.id = new TransactionAccountDetailId(transaction.getId(), account.getId());
     }
 
+
     public TransactionAccountDetailId getId() {
         return id;
     }
