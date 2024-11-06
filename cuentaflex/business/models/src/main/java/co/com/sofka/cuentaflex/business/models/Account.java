@@ -11,7 +11,7 @@ public final class Account extends BaseAuditableModel implements SoftDeletable {
     private BigDecimal amount;
     private String customerId;
     private boolean isDeleted;
-    private AccountMovementsHistory transactionHistory;
+    private final AccountMovementsHistory transactionHistory;
 
     public Account(String id, int number, BigDecimal amount, String customerId, boolean isDeleted) {
         super(id);
@@ -19,6 +19,7 @@ public final class Account extends BaseAuditableModel implements SoftDeletable {
         this.amount = amount;
         this.customerId = customerId;
         this.isDeleted = isDeleted;
+        this.transactionHistory = new AccountMovementsHistory();
     }
 
     public Account(String id, int number, BigDecimal amount, String customerId) {
@@ -27,6 +28,7 @@ public final class Account extends BaseAuditableModel implements SoftDeletable {
         this.amount = amount;
         this.customerId = customerId;
         this.isDeleted = false;
+        this.transactionHistory = new AccountMovementsHistory();
     }
 
     public Account(String id, LocalDateTime createdAt, int number, BigDecimal amount, String customerId, boolean isDeleted) {
@@ -35,6 +37,7 @@ public final class Account extends BaseAuditableModel implements SoftDeletable {
         this.amount = amount;
         this.customerId = customerId;
         this.isDeleted = isDeleted;
+        this.transactionHistory = new AccountMovementsHistory();
     }
 
     public int getNumber() {
@@ -53,6 +56,14 @@ public final class Account extends BaseAuditableModel implements SoftDeletable {
         this.amount = amount;
     }
 
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
     @Override
     public boolean isDeleted() {
         return this.isDeleted;
@@ -61,5 +72,13 @@ public final class Account extends BaseAuditableModel implements SoftDeletable {
     @Override
     public void setDeleted(boolean deleted) {
         this.isDeleted = deleted;
+    }
+
+    public AccountMovementsHistory getTransactionHistory() {
+        return transactionHistory;
+    }
+
+    public void addAccountMovement(AccountMovement movement) {
+        this.transactionHistory.addMovement(movement);
     }
 }

@@ -14,6 +14,18 @@ public final class AccountMovementsHistory implements Iterable<AccountMovement> 
         this.movements = new ArrayDeque<>(initialMovements);
     }
 
+    public void addMovement(AccountMovement movement) {
+        this.movements.addLast(movement);
+    }
+
+    public AccountMovement getLastMovement() {
+        return this.movements.peekLast();
+    }
+
+    public int getMovementCount() {
+        return this.movements.size();
+    }
+
     @Override
     public Iterator<AccountMovement> iterator() {
         return this.movements.iterator();

@@ -1,0 +1,6 @@
+dependencies {
+    implementation project(':shared-business-models')
+    implementation project(':cuentaflex-business-models')
+    implementation project(':cuentaflex-business-driven-ports')
+    implementation project(':shared-business-use-cases')
+}

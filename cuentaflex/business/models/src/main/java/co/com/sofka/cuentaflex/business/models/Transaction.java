@@ -11,6 +11,14 @@ public final class Transaction extends BaseAuditableModel {
     private TransactionType type;
     private LocalDateTime timestamp;
 
+    public Transaction(String id, BigDecimal amount, BigDecimal cost, TransactionType type) {
+        super(id);
+        this.amount = amount;
+        this.cost = cost;
+        this.type = type;
+        this.timestamp = LocalDateTime.now();
+    }
+
     public Transaction(String id, BigDecimal amount, BigDecimal cost, TransactionType type, LocalDateTime timestamp) {
         super(id);
         this.amount = amount;
