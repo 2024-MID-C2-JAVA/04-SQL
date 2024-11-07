@@ -19,6 +19,9 @@ findProject(':cuentaflex-business-use-cases').projectDir = file("./cuentaflex/bu
 include 'cuentaflex-business-driven-ports'
 findProject(':cuentaflex-business-driven-ports').projectDir = file("./cuentaflex/business/driven-ports")
 
+include ':cuentaflex-infrastructure-driven-adapters-mongo-repository'
+findProject(':cuentaflex-infrastructure-driven-adapters-mongo-repository').projectDir = file("./cuentaflex/infrastructure/driven-adapters/mongo-repository")
+
 include ':cuentaflex-infrastructure-driven-adapters-postgres-repository'
 findProject(':cuentaflex-infrastructure-driven-adapters-postgres-repository').projectDir = file("./cuentaflex/infrastructure/driven-adapters/postgres-repository")
 
