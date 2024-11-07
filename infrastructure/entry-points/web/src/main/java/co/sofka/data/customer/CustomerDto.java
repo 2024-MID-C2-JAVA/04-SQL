@@ -1,21 +1,21 @@
 package co.sofka.data.customer;
 
 import java.time.LocalDate;
-import java.util.Date;
 
-public class CustomerResponseDTO {
+public class CustomerDto {
 
     private String id;
     private String name;
     private LocalDate createdAt;
 
-    public CustomerResponseDTO(String id, String name, LocalDate createdAt) {
+
+    public CustomerDto(String id, String name, LocalDate createdAt) {
         this.id = id;
         this.name = name;
         this.createdAt = createdAt;
     }
 
-    public CustomerResponseDTO() {
+    public CustomerDto() {
     }
 
     public String getId() {

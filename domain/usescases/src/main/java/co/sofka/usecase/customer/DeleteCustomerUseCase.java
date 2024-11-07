@@ -1,17 +1,17 @@
 package co.sofka.usecase.customer;
 
 import co.sofka.Customer;
-import co.sofka.gateway.DeleteRepository;
+import co.sofka.gateway.CustomerRepository;
 
 public class DeleteCustomerUseCase {
 
-    private final DeleteRepository<Customer>repository;
+    private final CustomerRepository customerRepository;
 
-    public DeleteCustomerUseCase(DeleteRepository<Customer> repository) {
-        this.repository = repository;
+    public DeleteCustomerUseCase(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
     }
 
     public void apply(Customer customer) {
-        repository.delete(customer);
+        customerRepository.deleteCustomer(customer);
     }
 }

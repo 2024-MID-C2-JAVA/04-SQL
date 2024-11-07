@@ -9,9 +9,7 @@ import co.sofka.data.AccountTransactionEntity;
 import co.sofka.data.TransactionEntity;
 import co.sofka.exception.InvalidAmountException;
 import co.sofka.exception.TransactionNotFoundException;
-import co.sofka.gateway.CreateRepository;
-import co.sofka.gateway.DeleteRepository;
-import co.sofka.gateway.GetByIdRepository;
+import co.sofka.gateway.TransactionRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +17,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 @Repository
-public class PostgreSQLTransactionAdapter implements CreateRepository<Transaction>, DeleteRepository<Transaction>, GetByIdRepository<Transaction> {
+public class PostgreSQLTransactionAdapter implements TransactionRepository {
 
     private final PostgreSQLTransactionRepository repository;
     private final PostgreSQLAccountRepository accountRepository;
@@ -33,7 +31,7 @@ public class PostgreSQLTransactionAdapter implements CreateRepository<Transactio
 
     @Override
     @Transactional
-    public void create(Transaction transaction) {
+    public void createTransaction(Transaction transaction) {
 
         TransactionEntity transactionEntity = new TransactionEntity();
         if(transaction.getAmount().compareTo(BigDecimal.ZERO) < 0 ){
@@ -58,15 +56,9 @@ public class PostgreSQLTransactionAdapter implements CreateRepository<Transactio
     }
 
     @Override
-    public void delete(Transaction transaction) {
-        TransactionEntity transactionEntity = new TransactionEntity();
-        transactionEntity.setId(Integer.parseInt(transaction.getId()));
-        repository.delete(transactionEntity);
-    }
-
-    @Override
-    public Transaction getById(Transaction transaction) {
+    public Transaction getTransaction(Transaction transaction) {
             Optional<TransactionEntity> transactionEntityOpt = repository.findById(Integer.parseInt(transaction.getId()));
+
             if(transactionEntityOpt.isEmpty()){
                 throw new TransactionNotFoundException("The transaction does not exist");
             }else{

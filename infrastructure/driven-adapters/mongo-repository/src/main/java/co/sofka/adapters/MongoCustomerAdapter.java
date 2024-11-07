@@ -3,9 +3,7 @@ package co.sofka.adapters;
 import co.sofka.Customer;
 import co.sofka.data.CustomerDocument;
 import co.sofka.exception.NotFoundException;
-import co.sofka.gateway.CreateRepository;
-import co.sofka.gateway.DeleteRepository;
-import co.sofka.gateway.GetByIdRepository;
+import co.sofka.gateway.*;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +11,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 @Repository
-public class MongoCustomerAdapter implements CreateRepository<Customer>, DeleteRepository<Customer>, GetByIdRepository<Customer> {
+public class MongoCustomerAdapter implements CustomerRepository {
 
     private final MongoTemplate mongoTemplate;
 
@@ -22,7 +20,7 @@ public class MongoCustomerAdapter implements CreateRepository<Customer>, DeleteR
     }
 
     @Override
-    public void create(Customer customer) {
+    public void createCustomer(Customer customer) {
         CustomerDocument customerDocument = new CustomerDocument();
         customerDocument.setName(customer.getName());
         customerDocument.setDeleted(false);
@@ -31,7 +29,7 @@ public class MongoCustomerAdapter implements CreateRepository<Customer>, DeleteR
     }
 
     @Override
-    public void delete(Customer customer) {
+    public void deleteCustomer(Customer customer) {
         CustomerDocument customerDocument = mongoTemplate.findById(customer.getId(), CustomerDocument.class);
         if(customerDocument != null) {
             customerDocument.setDeleted(true);
@@ -40,7 +38,7 @@ public class MongoCustomerAdapter implements CreateRepository<Customer>, DeleteR
     }
 
     @Override
-    public Customer getById(Customer customer) {
+    public Customer getCustomer(Customer customer) {
         Optional<CustomerDocument>customerDocument= Optional.ofNullable(mongoTemplate.findById(customer.getId(), CustomerDocument.class));
 
         if(customerDocument.isEmpty()) {
@@ -53,4 +51,5 @@ public class MongoCustomerAdapter implements CreateRepository<Customer>, DeleteR
                 customerDocument.get().getCreatedAt()
         );
     }
+
 }

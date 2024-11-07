@@ -1,7 +1,7 @@
-package co.sofka.encryption;
+package co.sofka.cryptography.encryption;
 
-import co.sofka.gateway.CipherPort;
-import co.sofka.gateway.KeyPort;
+import co.sofka.gateway.encryption.CipherPort;
+import co.sofka.gateway.encryption.KeyPort;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -17,30 +17,33 @@ public class AESUtilAdapter implements CipherPort, KeyPort {
     private final byte[] iv;
     private static final String AES = "AES";
     private static final String AES_CIPHER_ALGORITHM = "AES/CBC/PKCS5Padding";
+    private static final int KEY_SIZE = 256;
+    private static final int IV_SIZE = 16;
 
 
-    public AESUtilAdapter() throws Exception {
+    public AESUtilAdapter() {
         this.secretKey = generateSecretKey();
         this.iv = generateIV();
     }
 
-    // Constructor que recibe clave secreta y IV
-    public AESUtilAdapter(SecretKey secretKey, byte[] iv) {
-        this.secretKey = secretKey;
-        this.iv = iv;
+
+    private static SecretKey generateSecretKey() {
+        try {
+            KeyGenerator keyGenerator = KeyGenerator.getInstance(AES);
+            keyGenerator.init(KEY_SIZE);
+            return keyGenerator.generateKey();
+        } catch (Exception e) {
+            throw new RuntimeException("Error generating AES secret key", e);
+        }
     }
 
-    public static SecretKey generateSecretKey() throws Exception {
-        KeyGenerator keyGenerator = KeyGenerator.getInstance(AES);
-        keyGenerator.init(256); // Tamaño de clave
-        return keyGenerator.generateKey();
-    }
 
-    public static byte[] generateIV() {
-        byte[] iv = new byte[16];
+    private static byte[] generateIV() {
+        byte[] iv = new byte[IV_SIZE];
         new SecureRandom().nextBytes(iv);
         return iv;
     }
+
 
     @Override
     public String encrypt(String plainText) throws Exception {
@@ -51,6 +54,7 @@ public class AESUtilAdapter implements CipherPort, KeyPort {
         return Base64.getEncoder().encodeToString(encryptedBytes);
     }
 
+
     @Override
     public String decrypt(String cipherText) throws Exception {
         Cipher cipher = Cipher.getInstance(AES_CIPHER_ALGORITHM);
@@ -58,6 +62,15 @@ public class AESUtilAdapter implements CipherPort, KeyPort {
         cipher.init(Cipher.DECRYPT_MODE, secretKey, ivParameterSpec);
         byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(cipherText));
         return new String(decryptedBytes);
+    }
+
+
+    public String getSymmetricKey() {
+        return Base64.getEncoder().encodeToString(secretKey.getEncoded());
+    }
+
+    public String getInitializationVector() {
+        return Base64.getEncoder().encodeToString(iv);
     }
 
     @Override
@@ -68,14 +81,7 @@ public class AESUtilAdapter implements CipherPort, KeyPort {
     @Override
     public SecretKey decodeKey(String encodedKey) {
         byte[] decodedKey = Base64.getDecoder().decode(encodedKey);
-        return new SecretKeySpec(decodedKey, 0, decodedKey.length, AES);
+        return new SecretKeySpec(decodedKey, AES);
     }
 
-    public byte[] getIv() {
-        return iv;
-    }
-
-    public SecretKey getSecretKey() {
-        return secretKey;
-    }
 }

@@ -2,16 +2,16 @@ package co.sofka.usecase.transaction;
 
 import co.sofka.Transaction;
 import co.sofka.exceptions.InvalidCreationException;
-import co.sofka.gateway.CreateRepository;
+import co.sofka.gateway.TransactionRepository;
 import co.sofka.usecase.strategy.AccountMovementContext;
 
 public class CreateTransactionUseCase {
 
-    private final CreateRepository<Transaction>repository;
+    private final TransactionRepository transactionRepository;
 
 
-    public CreateTransactionUseCase(CreateRepository<Transaction> repository) {
-        this.repository = repository;
+    public CreateTransactionUseCase(TransactionRepository transactionRepository) {
+        this.transactionRepository = transactionRepository;
     }
 
     public void apply(Transaction transaction) {
@@ -21,7 +21,7 @@ public class CreateTransactionUseCase {
         }
 
         Transaction transaction1=AccountMovementContext.accountMovement(transaction).movement(transaction);
-        repository.create(transaction1);
+        transactionRepository.createTransaction(transaction1);
     }
 
 }

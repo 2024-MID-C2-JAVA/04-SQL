@@ -1,18 +1,18 @@
 package co.sofka.usecase.account;
 
 import co.sofka.Account;
-import co.sofka.gateway.UpdateRepository;
+import co.sofka.gateway.AccountRepository;
 
 public class UpdateAccountUseCase {
 
-    private final UpdateRepository<Account>repository;
+    private final AccountRepository accountRepository;
 
-    public UpdateAccountUseCase(UpdateRepository<Account> repository) {
-        this.repository = repository;
+    public UpdateAccountUseCase(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
     }
 
 
     public void apply(Account account) {
-        repository.update(account);
+        accountRepository.updateAccount(account);
     }
 }

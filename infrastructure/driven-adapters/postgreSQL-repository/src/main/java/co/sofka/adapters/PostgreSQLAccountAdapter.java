@@ -7,17 +7,16 @@ import co.sofka.data.AccountEntity;
 import co.sofka.data.CustomerEntity;
 import co.sofka.exception.AccountNumberException;
 import co.sofka.exception.InvalidAmountException;
-import co.sofka.gateway.CreateRepository;
-import co.sofka.gateway.DeleteRepository;
-import co.sofka.gateway.GetByIdRepository;
-import co.sofka.gateway.UpdateRepository;
+import co.sofka.exception.NotFoundException;
+import co.sofka.gateway.*;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Repository
-public class PostgreSQLAccountAdapter implements CreateRepository<Account>, DeleteRepository<Account>, GetByIdRepository<Account>, UpdateRepository<Account> {
+public class PostgreSQLAccountAdapter implements AccountRepository {
 
     private final PostgreSQLAccountRepository repository;
     private final PostgreSQLCustomerRepository customerRepository;
@@ -28,7 +27,7 @@ public class PostgreSQLAccountAdapter implements CreateRepository<Account>, Dele
     }
 
     @Override
-    public void create(Account account) {
+    public void createAccount(Account account) {
         AccountEntity entity = new AccountEntity();
         CustomerEntity customer = new CustomerEntity();
         customer.setId(Integer.parseInt(account.getCustomerId()));
@@ -48,7 +47,7 @@ public class PostgreSQLAccountAdapter implements CreateRepository<Account>, Dele
 
 
     @Override
-    public void delete(Account account) {
+    public void deleteAccount(Account account) {
         AccountEntity entity = repository.findById(Integer.parseInt(account.getId())).get();
         entity.setDeleted(true);
         repository.save(entity);
@@ -56,18 +55,24 @@ public class PostgreSQLAccountAdapter implements CreateRepository<Account>, Dele
 
 
     @Override
-    public Account getById(Account account) {
-        AccountEntity entity = repository.findById(Integer.parseInt(account.getId())).get();
+    public Account getAccount(Account account) {
+
+        Optional<AccountEntity> entity = repository.findById(Integer.parseInt(account.getId()));
+
+        if (entity.isEmpty()) {
+            throw new NotFoundException("Account does not exists");
+        }
+
         return new Account(
-                String.valueOf(entity.getId()),
-                entity.getNumber(),
-                entity.getAmount(),
-                String.valueOf(entity.getCustomerId()),
-                entity.getCreatedAt());
+                String.valueOf(entity.get().getId()),
+                entity.get().getNumber(),
+                entity.get().getAmount(),
+                String.valueOf(entity.get().getCustomerId()),
+                entity.get().getCreatedAt());
     }
 
     @Override
-    public void update(Account account) {
+    public void updateAccount(Account account) {
         AccountEntity entity = repository.getReferenceById(Integer.parseInt(account.getId()));
         CustomerEntity customer = customerRepository.getReferenceById(Integer.parseInt(account.getCustomerId()));
         entity.setAmount(account.getAmount());

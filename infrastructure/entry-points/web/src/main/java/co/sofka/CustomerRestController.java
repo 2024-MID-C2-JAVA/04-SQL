@@ -1,9 +1,6 @@
 package co.sofka;
 
-import co.sofka.data.customer.CreateCustomerDTO;
-import co.sofka.data.customer.CustomerResponseDTO;
-import co.sofka.data.customer.DeleteCustomerDTO;
-import co.sofka.data.customer.GetCustomerByIdDTO;
+import co.sofka.data.customer.*;
 import co.sofka.handler.CustomerHandler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,32 +17,35 @@ public class CustomerRestController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> createCustomer(@RequestBody CreateCustomerDTO createCustomerDTO) {
-        try{
-            customerHandler.createCustomer(createCustomerDTO);
-            System.out.println("Customer name: "+createCustomerDTO.getName());
-            return ResponseEntity.ok("Customer created");
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while creating the customer: "+e.getMessage());
+    public ResponseEntity<ResponseCustomerMs> createCustomer(@RequestBody RequestMs<CustomerDto> customerDTO) {
+        try {
+            customerHandler.createCustomer(customerDTO.getDinBody());
+            return ResponseEntity.ok(new ResponseCustomerMs(customerDTO.getDinHeader(),customerDTO.getDinBody(),new DinError(DinErrorEnum.CUSTOMER_CREATED)));
+        } catch (Exception e) {
+            ResponseCustomerMs responseWithError = new ResponseCustomerMs(customerDTO.getDinHeader(),customerDTO.getDinBody(),new DinError(DinErrorEnum.CREATION_ERROR));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseWithError);
         }
     }
 
+
     @PostMapping("/delete")
-    public ResponseEntity<String> deleteCustomer(@RequestBody DeleteCustomerDTO deleteCustomerDTO) {
+    public ResponseEntity<ResponseCustomerMs> deleteCustomer(@RequestBody RequestMs<CustomerDto> deleteCustomerDTO) {
         try{
-            customerHandler.deleteCustomer(deleteCustomerDTO);
-            return ResponseEntity.ok("Customer deleted");
+            customerHandler.deleteCustomer(deleteCustomerDTO.getDinBody());
+            return ResponseEntity.ok(new ResponseCustomerMs(deleteCustomerDTO.getDinHeader(),deleteCustomerDTO.getDinBody(),new DinError(DinErrorEnum.CUSTOMER_DELETED)));
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while deleting the customer: "+e.getMessage());
+            ResponseCustomerMs responseWithError = new ResponseCustomerMs(new DinError(DinErrorEnum.DELETE_ERROR));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseWithError);
         }
     }
 
     @PostMapping("/get")
-    public ResponseEntity<CustomerResponseDTO> getCustomerById(@RequestBody GetCustomerByIdDTO dto){
+    public ResponseEntity<ResponseCustomerMs> getCustomerById(@RequestBody RequestMs<CustomerDto> dto){
         try{
-            return ResponseEntity.ok(customerHandler.getCustomerById(dto));
+            dto.setDinBody(customerHandler.getCustomerById(dto.getDinBody()));
+            return ResponseEntity.ok(new ResponseCustomerMs(dto.getDinHeader(),dto.getDinBody(),new DinError(DinErrorEnum.SUCCESS)));
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseCustomerMs(dto.getDinHeader(),dto.getDinBody(),new DinError(DinErrorEnum.CUSTOMER_NOT_FOUND)));
         }
     }
 

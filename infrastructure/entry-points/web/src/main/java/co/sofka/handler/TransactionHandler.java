@@ -1,10 +1,7 @@
 package co.sofka.handler;
 
 import co.sofka.Transaction;
-import co.sofka.data.transaction.CreateTransactionDTO;
-import co.sofka.data.transaction.GetTransactionDTO;
-import co.sofka.data.transaction.TransactionResponseDTO;
-import co.sofka.enums.Role;
+import co.sofka.data.transaction.TransactionDto;
 import co.sofka.usecase.transaction.CreateTransactionUseCase;
 import co.sofka.usecase.transaction.GetTransactionByIdUseCase;
 import org.springframework.stereotype.Component;
@@ -20,7 +17,7 @@ public class TransactionHandler {
         this.transactionByIdUseCase = transactionByIdUseCase;
     }
 
-    public void createTransaction(CreateTransactionDTO transactionDTO) {
+    public void createTransaction(TransactionDto transactionDTO) {
         Transaction transaction = new Transaction();
         transaction.setAmount(transactionDTO.getAmount());
         transaction.setType(transactionDTO.getType());
@@ -29,10 +26,11 @@ public class TransactionHandler {
     }
 
 
-    public TransactionResponseDTO getTransactionById(GetTransactionDTO getTransactionDTO){
+    public TransactionDto getTransactionById(TransactionDto getTransactionDTO){
         Transaction transaction= transactionByIdUseCase.apply(new Transaction(getTransactionDTO.getId()));
-        return new TransactionResponseDTO(
+        return new TransactionDto(
                 transaction.getId(),
+                transaction.getAccountId(),
                 transaction.getAmount(),
                 transaction.getAmountCost(),
                 transaction.getType(),

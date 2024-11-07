@@ -3,7 +3,7 @@ package co.sofka.data.account;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class AccountResponseDTO {
+public class AccountDto {
 
     private String id;
     private String number;
@@ -11,15 +11,11 @@ public class AccountResponseDTO {
     private String customerId;
     private LocalDate createdAt;
 
-    public AccountResponseDTO(String id, String number, BigDecimal amount, String customerId, LocalDate createdAt) {
-        this.id = id;
+    public AccountDto(String number, BigDecimal amount, String customerId, LocalDate createdAt) {
         this.number = number;
         this.amount = amount;
         this.customerId = customerId;
         this.createdAt = createdAt;
-    }
-
-    public AccountResponseDTO() {
     }
 
     public String getId() {
@@ -28,6 +24,9 @@ public class AccountResponseDTO {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public AccountDto() {
     }
 
     public String getNumber() {

@@ -1,4 +1,4 @@
-package co.sofka.gateway;
+package co.sofka.gateway.encryption;
 
 import javax.crypto.SecretKey;
 

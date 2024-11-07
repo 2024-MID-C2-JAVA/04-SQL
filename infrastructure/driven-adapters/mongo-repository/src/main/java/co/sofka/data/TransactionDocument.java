@@ -1,19 +1,17 @@
 package co.sofka.data;
 
 import co.sofka.enums.TypeOfTransaction;
-import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.time.OffsetDateTime;
 
-@Document(collection = "transactions")
+@Document(collection = "bank_db")
 public class TransactionDocument {
 
-    @MongoId
+    @Id
     private String id;
     private BigDecimal amount;
     private BigDecimal amountCost;

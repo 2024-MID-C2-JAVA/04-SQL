@@ -1,10 +1,12 @@
 package co.sofka.adapters;
 
+import co.sofka.Account;
 import co.sofka.Transaction;
+import co.sofka.data.AccountDocument;
+import co.sofka.data.CustomerDocument;
 import co.sofka.data.TransactionDocument;
 import co.sofka.exception.NotFoundException;
-import co.sofka.gateway.CreateRepository;
-import co.sofka.gateway.GetByIdRepository;
+import co.sofka.gateway.*;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +15,7 @@ import java.time.ZoneOffset;
 import java.util.Optional;
 
 @Repository
-public class MongoTransactionAdapter implements CreateRepository<Transaction>, GetByIdRepository<Transaction> {
+public class MongoTransactionAdapter implements TransactionRepository {
 
     private final MongoTemplate mongoTemplate;
 
@@ -22,16 +24,31 @@ public class MongoTransactionAdapter implements CreateRepository<Transaction>, G
     }
 
     @Override
-    public void create(Transaction transaction) {
+    public void createTransaction(Transaction transaction) {
+
+        Optional<AccountDocument>accountDocument= Optional.ofNullable(mongoTemplate.findById(transaction.getAccountId(), AccountDocument.class));
+
+        if(accountDocument.isEmpty()) {
+            throw new NotFoundException("Account does not exist");
+        }
+
+        Optional<CustomerDocument>customerDocument=Optional.ofNullable(mongoTemplate.findById(accountDocument.get().getCustomerId(), CustomerDocument.class));
+
         TransactionDocument transactionDocument = new TransactionDocument();
         transactionDocument.setAmount(transaction.getAmount());
         transactionDocument.setAmountCost(transaction.getAmountCost());
         transactionDocument.setTypeOfTransaction(transaction.getType());
+
+        accountDocument.get().getTransactions().add(transactionDocument);
+        customerDocument.get().setAccount(accountDocument.get());
+
         mongoTemplate.save(transactionDocument);
+        mongoTemplate.save(accountDocument.get());
+        mongoTemplate.save(customerDocument.get());
     }
 
     @Override
-    public Transaction getById(Transaction transaction) {
+    public Transaction getTransaction(Transaction transaction) {
 
         Optional<TransactionDocument> transactionDocument = Optional.ofNullable(mongoTemplate.findById(transaction.getId(), TransactionDocument.class));
 

@@ -1,14 +1,15 @@
 package co.sofka.handler;
 
 import co.sofka.Customer;
-import co.sofka.data.customer.CreateCustomerDTO;
-import co.sofka.data.customer.CustomerResponseDTO;
-import co.sofka.data.customer.DeleteCustomerDTO;
-import co.sofka.data.customer.GetCustomerByIdDTO;
+import co.sofka.data.customer.CustomerDto;
+import co.sofka.exception.NotFoundException;
+import co.sofka.exceptions.InvalidNameCustomerException;
 import co.sofka.usecase.customer.CreateCustomerUseCase;
 import co.sofka.usecase.customer.DeleteCustomerUseCase;
 import co.sofka.usecase.customer.GetCustomerByIdUseCase;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 public class CustomerHandler {
@@ -23,25 +24,34 @@ public class CustomerHandler {
         this.getCustomerByIdUseCase = getCustomerByIdUseCase;
     }
 
-    public void createCustomer(CreateCustomerDTO createCustomerDTO) {
-        Customer customer = new Customer();
-        customer.setName(createCustomerDTO.getName());
-        createCustomerUseCase.apply(customer);
+    public void createCustomer(CustomerDto customerDto) {
+        try{
+            Customer customer = new Customer();
+            customer.setName(customerDto.getName());
+            createCustomerUseCase.apply(customer);
+        }catch (InvalidNameCustomerException e){
+            throw new InvalidNameCustomerException(e.getMessage());
+        }
     }
 
-    public void deleteCustomer(DeleteCustomerDTO deleteCustomerDTO) {
+    public void deleteCustomer(CustomerDto customerDto) {
         Customer customer = new Customer();
-        customer.setId(deleteCustomerDTO.getId());
+        customer.setId(customerDto.getId());
         deleteCustomerUseCase.apply(customer);
     }
 
-    public CustomerResponseDTO getCustomerById(GetCustomerByIdDTO getCustomerByIdDTO) {
-        Customer customer = getCustomerByIdUseCase.apply(new Customer(getCustomerByIdDTO.getId()));
-        return new CustomerResponseDTO(
-                customer.getId(),
-                customer.getName(),
-                customer.getCreatedAt()
-        );
+    public CustomerDto getCustomerById(CustomerDto getCustomerByIdDTO) {
+        try{
+            Optional<Customer>customer=Optional.ofNullable(getCustomerByIdUseCase.apply(new Customer(getCustomerByIdDTO.getId())));
+
+            return new CustomerDto(
+                    customer.get().getId(),
+                    customer.get().getName(),
+                    customer.get().getCreatedAt()
+            );
+        }catch (NotFoundException e){
+            throw new NotFoundException("Customer does not exist");
+        }
     }
 
 }

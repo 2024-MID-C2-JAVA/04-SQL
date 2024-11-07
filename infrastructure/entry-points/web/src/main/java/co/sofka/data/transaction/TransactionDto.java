@@ -5,23 +5,26 @@ import co.sofka.enums.TypeOfTransaction;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
-public class TransactionResponseDTO {
+public class TransactionDto {
 
     private String id;
+    private String accountId;
     private BigDecimal amount;
     private BigDecimal amountCost;
     private TypeOfTransaction type;
     private OffsetDateTime timeStamp;
 
-    public TransactionResponseDTO(String id, BigDecimal amount, BigDecimal amountCost, TypeOfTransaction type, OffsetDateTime timeStamp) {
+
+    public TransactionDto(String id, String accountId, BigDecimal amount, BigDecimal amountCost, TypeOfTransaction type, OffsetDateTime timeStamp) {
         this.id = id;
+        this.accountId = accountId;
         this.amount = amount;
         this.amountCost = amountCost;
         this.type = type;
         this.timeStamp = timeStamp;
     }
 
-    public TransactionResponseDTO() {
+    public TransactionDto() {
     }
 
     public String getId() {
@@ -30,6 +33,14 @@ public class TransactionResponseDTO {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
     }
 
     public BigDecimal getAmount() {
@@ -64,3 +75,4 @@ public class TransactionResponseDTO {
         this.timeStamp = timeStamp;
     }
 }
+

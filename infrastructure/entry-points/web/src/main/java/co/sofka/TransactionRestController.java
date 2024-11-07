@@ -1,10 +1,8 @@
 package co.sofka;
 
-import co.sofka.data.transaction.CreateTransactionDTO;
-import co.sofka.data.transaction.GetTransactionDTO;
-import co.sofka.data.transaction.TransactionResponseDTO;
+import co.sofka.data.transaction.ResponseTransactionMs;
+import co.sofka.data.transaction.TransactionDto;
 import co.sofka.handler.TransactionHandler;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,18 +20,22 @@ public class TransactionRestController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> createTransaction(@RequestBody CreateTransactionDTO dto) {
-        try{
-            transactionHandler.createTransaction(dto);
-            return ResponseEntity.ok("Transaction created");
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while creating the transaction: "+e.getMessage());
+    public ResponseEntity<ResponseTransactionMs> createTransaction(@RequestBody RequestMs<TransactionDto> dto) {
+        try {
+            transactionHandler.createTransaction(dto.getDinBody());
+            return ResponseEntity.ok(new ResponseTransactionMs(dto.getDinHeader(), dto.getDinBody(), new DinError(DinErrorEnum.TRANSACTION_CREATE)));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new ResponseTransactionMs(dto.getDinHeader(), dto.getDinBody(), new DinError(DinErrorEnum.TRANSACTION_ERROR)));
         }
     }
 
     @PostMapping("/get")
-    public ResponseEntity<TransactionResponseDTO> getTransaction(@RequestBody GetTransactionDTO dto) {
-        return ResponseEntity.ok(transactionHandler.getTransactionById(dto));
+    public ResponseEntity<ResponseTransactionMs> getTransaction(@RequestBody RequestMs<TransactionDto> dto) {
+        try {
+            return ResponseEntity.ok(new ResponseTransactionMs(dto.getDinHeader(), transactionHandler.getTransactionById(dto.getDinBody()), new DinError(DinErrorEnum.TRANSACTION_CREATE)));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new ResponseTransactionMs(dto.getDinHeader(), dto.getDinBody(), new DinError(DinErrorEnum.TRANSACTION_ERROR)));
+        }
     }
 
 }

@@ -20,8 +20,6 @@ public class AccountTransactionEntity {
     @JoinColumn(name = "transaction_id")
     private TransactionEntity transaction;
 
-    //@Enumerated(EnumType.STRING)
-    //@Column(columnDefinition = "VARCHAR(20) DEFAULT 'PAYROLL'", nullable = false)
     private String role;
 
     public AccountTransactionEntity() {

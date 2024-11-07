@@ -1,26 +1,33 @@
 package co.sofka.data;
 
-import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-@Document(collection = "accounts")
+@Document(collection = "bank_db")
 public class AccountDocument {
 
-    @MongoId
+    @Id
     private String id;
     private int number;
     private BigDecimal amount;
-    @Field(name = "customer_id")
-    private String customerId;
     @Field(name = "created_at")
     private LocalDate createdAt;
     @Field(name = "is_deleted")
     private Boolean isDeleted;
+    @Field(name = "account_transactions")
+    private List<TransactionDocument> transactions;
+    @Field(name = "customer_id")
+    private String customerId;
+
+    public AccountDocument() {
+        this.transactions = new ArrayList<>();
+    }
 
     public String getId() {
         return id;
@@ -46,14 +53,6 @@ public class AccountDocument {
         this.amount = amount;
     }
 
-    public String getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
-    }
-
     public LocalDate getCreatedAt() {
         return createdAt;
     }
@@ -68,5 +67,21 @@ public class AccountDocument {
 
     public void setDeleted(Boolean deleted) {
         isDeleted = deleted;
+    }
+
+    public List<TransactionDocument> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<TransactionDocument> transactions) {
+        this.transactions = transactions;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 }

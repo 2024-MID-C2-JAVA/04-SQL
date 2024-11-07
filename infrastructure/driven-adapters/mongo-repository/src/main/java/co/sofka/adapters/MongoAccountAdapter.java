@@ -2,11 +2,9 @@ package co.sofka.adapters;
 
 import co.sofka.Account;
 import co.sofka.data.AccountDocument;
+import co.sofka.data.CustomerDocument;
 import co.sofka.exception.NotFoundException;
-import co.sofka.gateway.CreateRepository;
-import co.sofka.gateway.DeleteRepository;
-import co.sofka.gateway.GetByIdRepository;
-import co.sofka.gateway.UpdateRepository;
+import co.sofka.gateway.AccountRepository;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +12,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 @Repository
-public class MongoAccountAdapter implements CreateRepository<Account>, DeleteRepository<Account>, GetByIdRepository<Account> {
+public class MongoAccountAdapter implements AccountRepository {
 
     private final MongoTemplate mongoTemplate;
 
@@ -23,19 +21,30 @@ public class MongoAccountAdapter implements CreateRepository<Account>, DeleteRep
     }
 
     @Override
-    public void create(Account account) {
+    public void createAccount(Account account) {
+        Optional<CustomerDocument>customerDocument = Optional.ofNullable(mongoTemplate.findById(account.getCustomerId(),CustomerDocument.class));
+
+        if(customerDocument.isEmpty()) {
+            throw new NotFoundException("Customer not found");
+        }
+
         AccountDocument accountDocument = new AccountDocument();
         accountDocument.setNumber(account.getNumber());
         accountDocument.setAmount(account.getAmount());
-        accountDocument.setCustomerId(account.getCustomerId());
         accountDocument.setCreatedAt(LocalDate.now());
         accountDocument.setDeleted(false);
+        accountDocument.setCustomerId(customerDocument.get().getId());
+
+
+        customerDocument.get().setAccount(accountDocument);
+
         mongoTemplate.save(accountDocument);
+        mongoTemplate.save(customerDocument.get());
     }
 
 
     @Override
-    public void delete(Account account) {
+    public void deleteAccount(Account account) {
         AccountDocument accountDocument = mongoTemplate.findById(account.getId(), AccountDocument.class);
         assert accountDocument != null;
         accountDocument.setDeleted(true);
@@ -44,8 +53,9 @@ public class MongoAccountAdapter implements CreateRepository<Account>, DeleteRep
 
 
     @Override
-    public Account getById(Account account) {
-        Optional<AccountDocument>accountDocument= Optional.ofNullable(mongoTemplate.findById(account.getId(), AccountDocument.class));
+    public Account getAccount(Account account) {
+
+        Optional<AccountDocument>accountDocument=Optional.ofNullable(mongoTemplate.findById(account.getId(),AccountDocument.class));
 
         if(accountDocument.isEmpty()) {
             throw new NotFoundException("Account does not exist");
@@ -54,7 +64,21 @@ public class MongoAccountAdapter implements CreateRepository<Account>, DeleteRep
         return new Account(accountDocument.get().getId(),
                 accountDocument.get().getNumber(),
                 accountDocument.get().getAmount(),
-                accountDocument.get().getCustomerId(),
+                account.getId(),
                 accountDocument.get().getCreatedAt());
     }
+
+    @Override
+    public void updateAccount(Account account) {
+        Optional<AccountDocument>accountDocument=Optional.ofNullable(mongoTemplate.findById(account.getId(),AccountDocument.class));
+
+        if(accountDocument.isEmpty()) {
+            throw new NotFoundException("Account does not exist");
+        }
+
+        accountDocument.get().setAmount(account.getAmount());
+
+        mongoTemplate.save(accountDocument.get());
+    }
+
 }

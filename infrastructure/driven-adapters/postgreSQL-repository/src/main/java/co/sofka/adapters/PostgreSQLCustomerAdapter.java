@@ -3,16 +3,16 @@ package co.sofka.adapters;
 import co.sofka.Customer;
 import co.sofka.config.PostgreSQLCustomerRepository;
 import co.sofka.data.CustomerEntity;
+import co.sofka.exception.NotFoundException;
 import co.sofka.exceptions.InvalidNameCustomerException;
-import co.sofka.gateway.CreateRepository;
-import co.sofka.gateway.DeleteRepository;
-import co.sofka.gateway.GetByIdRepository;
+import co.sofka.gateway.CustomerRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Repository
-public class PostgreSQLCustomerAdapter implements CreateRepository<Customer>, DeleteRepository<Customer>, GetByIdRepository<Customer> {
+public class PostgreSQLCustomerAdapter implements CustomerRepository {
 
     private final PostgreSQLCustomerRepository repository;
 
@@ -21,7 +21,7 @@ public class PostgreSQLCustomerAdapter implements CreateRepository<Customer>, De
     }
 
     @Override
-    public void create(Customer customer) {
+    public void createCustomer(Customer customer) {
         CustomerEntity entity = new CustomerEntity();
 
         if (customer.getName() == null || customer.getName().trim().isEmpty()) {
@@ -37,7 +37,7 @@ public class PostgreSQLCustomerAdapter implements CreateRepository<Customer>, De
 
 
     @Override
-    public void delete(Customer customer) {
+    public void deleteCustomer(Customer customer) {
         CustomerEntity entity=repository.findById(Integer.parseInt(customer.getId())).get();
         entity.setDeleted(true);
         repository.save(entity);
@@ -45,12 +45,17 @@ public class PostgreSQLCustomerAdapter implements CreateRepository<Customer>, De
 
 
     @Override
-    public Customer getById(Customer customer) {
-        CustomerEntity entity=repository.findById(Integer.parseInt(customer.getId())).get();
+    public Customer getCustomer(Customer customer) {
+        Optional<CustomerEntity> entity=repository.findById(Integer.parseInt(customer.getId()));
+
+        if(entity.isEmpty()){
+            throw new NotFoundException("Customer does not exists");
+        }
+
         return new Customer(
-                String.valueOf(entity.getId()),
-                entity.getName(),
-                entity.getCreatedAt()
+                String.valueOf(entity.get().getId()),
+                entity.get().getName(),
+                entity.get().getCreatedAt()
         );
     }
 }
