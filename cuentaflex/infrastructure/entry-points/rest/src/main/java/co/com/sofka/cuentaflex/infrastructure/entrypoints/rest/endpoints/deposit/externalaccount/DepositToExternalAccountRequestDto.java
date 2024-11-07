@@ -6,16 +6,27 @@ public final class DepositToExternalAccountRequestDto {
     private String customerId;
     private String accountId;
     private BigDecimal amount;
-    private int accountNumberToDeposit;
+    private String encryptedAccountNumberToDeposit;
+    private String initializationVector;
+    private String secretKey;
 
     public DepositToExternalAccountRequestDto() {
     }
 
-    public DepositToExternalAccountRequestDto(String customerId, String accountId, BigDecimal amount, int accountNumberToDeposit) {
+    public DepositToExternalAccountRequestDto(
+            String customerId,
+            String accountId,
+            BigDecimal amount,
+            String encryptedAccountNumberToDeposit,
+            String initializationVector,
+            String secretKey
+    ) {
         this.customerId = customerId;
         this.accountId = accountId;
         this.amount = amount;
-        this.accountNumberToDeposit = accountNumberToDeposit;
+        this.encryptedAccountNumberToDeposit = encryptedAccountNumberToDeposit;
+        this.initializationVector = initializationVector;
+        this.secretKey = secretKey;
     }
 
     public String getCustomerId() {
@@ -42,11 +53,27 @@ public final class DepositToExternalAccountRequestDto {
         this.amount = amount;
     }
 
-    public int getAccountNumberToDeposit() {
-        return accountNumberToDeposit;
+    public String getEncryptedAccountNumberToDeposit() {
+        return encryptedAccountNumberToDeposit;
     }
 
-    public void setAccountNumberToDeposit(int accountNumberToDeposit) {
-        this.accountNumberToDeposit = accountNumberToDeposit;
+    public void setEncryptedAccountNumberToDeposit(String encryptedAccountNumberToDeposit) {
+        this.encryptedAccountNumberToDeposit = encryptedAccountNumberToDeposit;
+    }
+
+    public String getInitializationVector() {
+        return initializationVector;
+    }
+
+    public void setInitializationVector(String initializationVector) {
+        this.initializationVector = initializationVector;
+    }
+
+    public String getSecretKey() {
+        return secretKey;
+    }
+
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
     }
 }

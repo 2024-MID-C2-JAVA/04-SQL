@@ -1,4 +1,5 @@
 dependencies {
+    implementation project(':core-cryptography-aes')
     implementation project(':shared-business-models')
     implementation project(':cuentaflex-business-models')
     implementation project(':cuentaflex-business-driven-ports')

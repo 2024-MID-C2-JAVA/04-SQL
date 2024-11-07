@@ -8,16 +8,23 @@ public final class DepositToExternalAccountResponse {
     private final BigDecimal amount;
     private final BigDecimal cost;
     private final LocalDateTime timestamp;
-    private final int payrollAccountNumber;
-    private final int supplierAccountNumber;
+    private final String encryptedPayrollAccountNumber;
+    private final String encryptedSupplierAccountNumber;
 
-    public DepositToExternalAccountResponse(String transactionId, BigDecimal amount, BigDecimal cost, LocalDateTime timestamp, int payrollAccountNumber, int supplierAccountNumber) {
+    public DepositToExternalAccountResponse(
+            String transactionId,
+            BigDecimal amount,
+            BigDecimal cost,
+            LocalDateTime timestamp,
+            String encryptedPayrollAccountNumber,
+            String encryptedSupplierAccountNumber
+    ) {
         this.transactionId = transactionId;
         this.amount = amount;
         this.cost = cost;
         this.timestamp = timestamp;
-        this.payrollAccountNumber = payrollAccountNumber;
-        this.supplierAccountNumber = supplierAccountNumber;
+        this.encryptedPayrollAccountNumber = encryptedPayrollAccountNumber;
+        this.encryptedSupplierAccountNumber = encryptedSupplierAccountNumber;
     }
 
     public String getTransactionId() {
@@ -36,11 +43,11 @@ public final class DepositToExternalAccountResponse {
         return timestamp;
     }
 
-    public int getPayrollAccountNumber() {
-        return payrollAccountNumber;
+    public String getEncryptedPayrollAccountNumber() {
+        return encryptedPayrollAccountNumber;
     }
 
-    public int getSupplierAccountNumber() {
-        return supplierAccountNumber;
+    public String getEncryptedSupplierAccountNumber() {
+        return encryptedSupplierAccountNumber;
     }
 }

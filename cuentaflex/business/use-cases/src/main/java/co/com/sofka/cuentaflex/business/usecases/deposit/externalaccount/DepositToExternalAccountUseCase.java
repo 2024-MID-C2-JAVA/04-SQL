@@ -1,9 +1,9 @@
 package co.com.sofka.cuentaflex.business.usecases.deposit.externalaccount;
 
+import co.com.sofka.core.cryptography.aes.AESCipher;
 import co.com.sofka.cuentaflex.business.drivenports.repositories.AccountRepository;
 import co.com.sofka.cuentaflex.business.models.*;
 import co.com.sofka.cuentaflex.business.usecases.common.transactions.FeesValues;
-import co.com.sofka.cuentaflex.business.usecases.common.transactions.TransactionDoneResponse;
 import co.com.sofka.cuentaflex.business.usecases.common.transactions.TransactionErrors;
 import co.com.sofka.shared.business.usecases.ResultWith;
 import co.com.sofka.shared.business.usecases.UseCase;
@@ -36,7 +36,8 @@ public final class DepositToExternalAccountUseCase implements UseCase<DepositToE
             return ResultWith.failure(TransactionErrors.ACCOUNT_NOT_FOUND);
         }
 
-        Account toAccount = accountRepository.getByAccountNumber(request.getAccountNumberToDeposit());
+        int decryptedAccountNumber = Integer.parseInt(AESCipher.decryptFromBase64(request.getEncryptedAccountNumberToDeposit(), request.getSecretKey(), request.getInitializationVector()));
+        Account toAccount = accountRepository.getByAccountNumber(decryptedAccountNumber);
 
         if (toAccount == null) {
             return ResultWith.failure(TransactionErrors.ACCOUNT_NOT_FOUND);
@@ -76,8 +77,8 @@ public final class DepositToExternalAccountUseCase implements UseCase<DepositToE
                 firstTransaction.getAmount(),
                 firstTransaction.getCost(),
                 firstTransaction.getTimestamp(),
-                fromAccount.getNumber(),
-                toAccount.getNumber()
+                AESCipher.encryptToBase64(String.valueOf(fromAccount.getNumber()), request.getSecretKey(), request.getInitializationVector()),
+                AESCipher.encryptToBase64(String.valueOf(toAccount.getNumber()), request.getSecretKey(), request.getInitializationVector())
         );
 
         return ResultWith.success(response);

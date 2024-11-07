@@ -9,7 +9,9 @@ public final class DepositToExternalAccountMapper {
                 requestDto.getCustomerId(),
                 requestDto.getAccountId(),
                 requestDto.getAmount(),
-                requestDto.getAccountNumberToDeposit()
+                requestDto.getEncryptedAccountNumberToDeposit(),
+                requestDto.getInitializationVector(),
+                requestDto.getSecretKey()
         );
     }
 
@@ -19,8 +21,8 @@ public final class DepositToExternalAccountMapper {
                 response.getAmount(),
                 response.getCost(),
                 response.getTimestamp(),
-                response.getPayrollAccountNumber(),
-                response.getSupplierAccountNumber()
+                response.getEncryptedPayrollAccountNumber(),
+                response.getEncryptedSupplierAccountNumber()
         );
     }
 }

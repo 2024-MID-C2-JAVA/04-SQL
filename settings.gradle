@@ -24,3 +24,6 @@ findProject(':cuentaflex-infrastructure-driven-adapters-postgres-repository').pr
 
 include ':cuentaflex-infrastructure-entry-points-rest'
 findProject(':cuentaflex-infrastructure-entry-points-rest').projectDir = file("./cuentaflex/infrastructure/entry-points/rest")
+
+include ':core-cryptography-aes'
+findProject(':core-cryptography-aes').projectDir = file("./core/cryptography/aes")

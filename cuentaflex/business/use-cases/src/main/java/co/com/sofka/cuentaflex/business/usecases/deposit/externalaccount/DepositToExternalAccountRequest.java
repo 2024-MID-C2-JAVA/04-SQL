@@ -6,13 +6,24 @@ public final class DepositToExternalAccountRequest {
     private final String customerId;
     private final String accountId;
     private final BigDecimal amount;
-    private final int accountNumberToDeposit;
+    private final String encryptedAccountNumberToDeposit;
+    private final String initializationVector;
+    private final String secretKey;
 
-    public DepositToExternalAccountRequest(String customerId, String accountId, BigDecimal amount, int accountNumberToDeposit) {
+    public DepositToExternalAccountRequest(
+            String customerId,
+            String accountId,
+            BigDecimal amount,
+            String encryptedAccountNumberToDeposit,
+            String initializationVector,
+            String secretKey
+    ) {
         this.customerId = customerId;
         this.accountId = accountId;
         this.amount = amount;
-        this.accountNumberToDeposit = accountNumberToDeposit;
+        this.encryptedAccountNumberToDeposit = encryptedAccountNumberToDeposit;
+        this.initializationVector = initializationVector;
+        this.secretKey = secretKey;
     }
 
     public String getCustomerId() {
@@ -27,7 +38,15 @@ public final class DepositToExternalAccountRequest {
         return amount;
     }
 
-    public int getAccountNumberToDeposit() {
-        return accountNumberToDeposit;
+    public String getEncryptedAccountNumberToDeposit() {
+        return encryptedAccountNumberToDeposit;
+    }
+
+    public String getInitializationVector() {
+        return initializationVector;
+    }
+
+    public String getSecretKey() {
+        return secretKey;
     }
 }

@@ -8,19 +8,19 @@ public final class DepositToExternalAccountResponseDto {
     private BigDecimal amount;
     private BigDecimal cost;
     private LocalDateTime timestamp;
-    private int payrollAccountNumber;
-    private int supplierAccountNumber;
+    private String encryptedPayrollAccountNumber;
+    private String encryptedSupplierAccountNumber;
 
     public DepositToExternalAccountResponseDto() {
     }
 
-    public DepositToExternalAccountResponseDto(String transactionId, BigDecimal amount, BigDecimal cost, LocalDateTime timestamp, int payrollAccountNumber, int supplierAccountNumber) {
+    public DepositToExternalAccountResponseDto(String transactionId, BigDecimal amount, BigDecimal cost, LocalDateTime timestamp, String encryptedPayrollAccountNumber, String encryptedSupplierAccountNumber) {
         this.transactionId = transactionId;
         this.amount = amount;
         this.cost = cost;
         this.timestamp = timestamp;
-        this.payrollAccountNumber = payrollAccountNumber;
-        this.supplierAccountNumber = supplierAccountNumber;
+        this.encryptedPayrollAccountNumber = encryptedPayrollAccountNumber;
+        this.encryptedSupplierAccountNumber = encryptedSupplierAccountNumber;
     }
 
     public String getTransactionId() {
@@ -55,19 +55,19 @@ public final class DepositToExternalAccountResponseDto {
         this.timestamp = timestamp;
     }
 
-    public int getPayrollAccountNumber() {
-        return payrollAccountNumber;
+    public String getEncryptedPayrollAccountNumber() {
+        return encryptedPayrollAccountNumber;
     }
 
-    public void setPayrollAccountNumber(int payrollAccountNumber) {
-        this.payrollAccountNumber = payrollAccountNumber;
+    public void setEncryptedPayrollAccountNumber(String encryptedPayrollAccountNumber) {
+        this.encryptedPayrollAccountNumber = encryptedPayrollAccountNumber;
     }
 
-    public int getSupplierAccountNumber() {
-        return supplierAccountNumber;
+    public String getEncryptedSupplierAccountNumber() {
+        return encryptedSupplierAccountNumber;
     }
 
-    public void setSupplierAccountNumber(int supplierAccountNumber) {
-        this.supplierAccountNumber = supplierAccountNumber;
+    public void setEncryptedSupplierAccountNumber(String encryptedSupplierAccountNumber) {
+        this.encryptedSupplierAccountNumber = encryptedSupplierAccountNumber;
     }
 }

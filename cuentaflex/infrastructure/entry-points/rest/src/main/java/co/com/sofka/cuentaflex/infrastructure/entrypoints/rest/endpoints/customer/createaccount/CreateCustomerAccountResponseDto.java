@@ -4,15 +4,15 @@ import java.math.BigDecimal;
 
 public final class CreateCustomerAccountResponseDto {
     private String accountId;
-    private int number;
+    private String encryptedNumber;
     private BigDecimal amount;
 
     public CreateCustomerAccountResponseDto() {
     }
 
-    public CreateCustomerAccountResponseDto(String accountId, int number, BigDecimal amount) {
+    public CreateCustomerAccountResponseDto(String accountId, String encryptedNumber, BigDecimal amount) {
         this.accountId = accountId;
-        this.number = number;
+        this.encryptedNumber = encryptedNumber;
         this.amount = amount;
     }
 
@@ -24,12 +24,12 @@ public final class CreateCustomerAccountResponseDto {
         this.accountId = accountId;
     }
 
-    public int getNumber() {
-        return number;
+    public String getEncryptedNumber() {
+        return encryptedNumber;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public void setEncryptedNumber(String encryptedNumber) {
+        this.encryptedNumber = encryptedNumber;
     }
 
     public BigDecimal getAmount() {

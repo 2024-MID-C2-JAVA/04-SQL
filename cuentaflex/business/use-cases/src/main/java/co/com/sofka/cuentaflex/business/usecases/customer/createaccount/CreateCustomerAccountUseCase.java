@@ -1,5 +1,6 @@
 package co.com.sofka.cuentaflex.business.usecases.customer.createaccount;
 
+import co.com.sofka.core.cryptography.aes.AESCipher;
 import co.com.sofka.cuentaflex.business.drivenports.repositories.AccountRepository;
 import co.com.sofka.cuentaflex.business.drivenports.repositories.CustomerRepository;
 import co.com.sofka.cuentaflex.business.models.Account;
@@ -40,7 +41,7 @@ public final class CreateCustomerAccountUseCase implements UseCase<CreateCustome
 
         return ResultWith.success(new CreateCustomerAccountResponse(
                 addedAccount.getId(),
-                addedAccount.getNumber(),
+                AESCipher.encryptToBase64(String.valueOf(addedAccount.getNumber()), request.getSecretKey(), request.getInitializationVector()),
                 addedAccount.getAmount()
         ));
     }

@@ -8,13 +8,13 @@ import java.math.BigDecimal;
 public final class CreateCustomerAccountMapper {
     public static CreateCustomerAccountRequest fromDtoToUseCaseRequest(CreateCustomerAccountRequestDto dto) {
         BigDecimal amount = dto.getAmount() == null ? BigDecimal.ZERO : dto.getAmount();
-        return new CreateCustomerAccountRequest(dto.getCustomerId(), amount);
+        return new CreateCustomerAccountRequest(dto.getCustomerId(), amount, dto.getInitializationVector(), dto.getSecretKey());
     }
 
     public static CreateCustomerAccountResponseDto fromUseCaseToDtoResponse(CreateCustomerAccountResponse response) {
         return new CreateCustomerAccountResponseDto(
                 response.getAccountId(),
-                response.getNumber(),
+                response.getEncryptedNumber(),
                 response.getAmount()
         );
     }
